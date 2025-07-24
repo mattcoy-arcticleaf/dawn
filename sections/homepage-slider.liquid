@@ -1,0 +1,101 @@
+<div class="banner-slider_inner">
+    <div class="swiper bannerslider">
+        <div class="swiper-wrapper">
+            {% for block in section.blocks %}
+                <div class="swiper-slide">
+                    <a href="{{ block.settings.banner_slide_link }}">
+                        <div class="banner-inner">
+                            <div class="banner-image">
+                                {%- liquid
+                                  assign height = block.settings.banner_slide_image.width | divided_by: block.settings.banner_slide_image.aspect_ratio | round
+                                  if section.settings.image_behavior == 'ambient'
+                                    assign sizes = '120vw'
+                                    assign widths = '450, 660, 900, 1320, 1800, 2136, 2400, 3600, 7680'
+                                  else
+                                    assign sizes = '100vw'
+                                    assign widths = '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840'
+                                  endif
+                                  assign fetch_priority = 'high'
+                                -%}
+                                {%- if forloop.first %}
+                                  {{
+                                    block.settings.banner_slide_image
+                                    | image_url: width: 1920
+                                    | image_tag: height: height, sizes: sizes, widths: widths, fetchpriority: fetch_priority
+                                  }}
+                                {%- else -%}
+                                  {{
+                                    block.settings.banner_slide_image
+                                    | image_url: width: 1920
+                                    | image_tag: loading: 'lazy', height: height, sizes: sizes, widths: widths
+                                  }}
+                                {%- endif -%}
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="slider-btns">
+        <div class="prev-btn">
+            <div class="prev-button slide-btn">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+        <div class="next-btn">
+            <div class="next-button slide-btn">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% schema %}
+    {
+      "name": "Banner Slider",
+      "tag": "section",
+      "class": "banner-sliderr_wrapper",
+      "settings": [
+        {
+          "type": "text",
+          "label": "Extra Class",
+          "id": "extra_class"
+        }
+      ],
+      "blocks": [
+        {
+          "type": "banner_slides",
+          "name": "Banner Slides",
+          "settings": [
+            {
+              "type": "url",
+              "label": "Banner Slide Link",
+              "id": "banner_slide_link"
+            },
+            {
+              "type": "image_picker",
+              "label": "Banner Slide Image",
+              "id": "banner_slide_image"
+            }
+          ]
+        }
+      ],
+      "presets": [
+        {
+          "name": "Banner Slider"
+        }
+      ]
+    }
+    {% endschema %}
+    
+    {% stylesheet %}
+    {% endstylesheet %}
+    
+    {% javascript %}
+    {% endjavascript %}
+    

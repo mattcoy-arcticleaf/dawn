@@ -1,0 +1,97 @@
+<div class="container-fluid">
+    <div class="section-title">
+        <h2>{{ section.settings.section_title |  upcase }}</h2>
+    </div>
+    <div class="image-productslider">
+        <div class="product-image-dots">
+            <div class="main-products-image">
+                <img class="img-ratio" src="{{ section.settings.main_shop_look_image |  image_url: width: 884 }}" width="884" height="797" alt="{{ section.settings.main_shop_look_image.alt }}" />
+            </div>
+            {% for block in section.blocks %}
+                {% if block.type == 'product_slider' and block.settings.selected_product != blank %}
+                  {% assign product = all_products[block.settings.selected_product] %}
+                  <div class="shop-the-look--button" data-index="{{ forloop.index }}">
+                      <div class="shop-the-look--hotspot">
+                          <span class="hidden-text">{{ product.title }}</span>
+                      </div>
+                  </div>
+                {% endif %}
+              {% endfor %}              
+        </div>
+        <div class="product-slider">
+            <div class="swiper productslider">
+                <div class="swiper-wrapper">
+                    {% for block in section.blocks %}
+                      {% if block.type == 'product_slider' and block.settings.selected_product != blank %}
+                        {% assign product = all_products[block.settings.selected_product] %}
+                        <div class="swiper-slide" data-index="{{ forloop.index }}">
+                            <div class="product-item">
+                              <a href="{{ product.url }}">
+                                <div class="product-item-img">
+                                  <img class="main-image img-ratio" src="{{ product.featured_image | image_url: width: 284 }}" alt="{{ product.featured_image.alt }}" width="284" height="384">
+                                  {%- if product.media[1] != null -%}
+                                    <img src="{{ product.media[1] | image_url: width: 284 }}" 
+                                         alt="{{ product.featured_image.alt }}" 
+                                         width="284" height="384" 
+                                         class="hover-image img-ratio">
+                                    {%- endif -%}
+                                </div>
+                                <div class="product-info">
+                                    <h6>{{ product.title }}</h6>
+                                    <p>{{ product.price | money }}</p>
+                                </div>
+                              </a>
+                            </div>
+                        </div>
+                      {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+          </div>
+    </div>
+</div>
+
+{% schema %}
+    {
+      "name": "Image With Product Slider",
+      "tag": "section",
+      "class": "image-productslider_wrapper",
+      "settings": [
+        {
+          "type": "text",
+          "label": "Section Title",
+          "id": "section_title"
+        },
+        {
+          "type": "image_picker",
+          "label": "Main Shop Look Image",
+          "id": "main_shop_look_image"
+        }
+      ],
+      "blocks": [
+        {
+          "type": "product_slider",
+          "name": "Product Slider",
+          "settings": [
+            {
+              "type": "product",
+              "id": "selected_product",
+              "label": "Select Product"
+            }
+          ]
+        }
+      ],
+      "presets": [
+        {
+          "name": "Image With Product Slider",
+          "blocks": [
+            {
+              "type": "product_slider"
+            }
+          ]
+        }
+      ]
+    }
+    {% endschema %}
+    

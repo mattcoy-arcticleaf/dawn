@@ -4,8 +4,19 @@
     "theme_name": "Dawn",
     "theme_version": "15.2.0",
     "theme_author": "Shopify",
-    "theme_documentation_url": "https://help.shopify.com/manual/online-store/themes",
-    "theme_support_url": "https://support.shopify.com/"
+    "theme_documentation_url": "https:\/\/help.shopify.com\/manual\/online-store\/themes",
+    "theme_support_url": "https:\/\/support.shopify.com\/"
+  },
+  {
+    "name": "Header",
+    "settings": [
+      {
+        "type": "link_list",
+        "id": "mobile_menu",
+        "default": "main-menu",
+        "label": "Mobile Menu"
+      }
+    ]
   },
   {
     "name": "t:settings_schema.logo.name",
@@ -31,6 +42,54 @@
         "label": "t:settings_schema.logo.settings.favicon.label",
         "info": "t:settings_schema.logo.settings.favicon.info"
       }
+    ]
+  },
+  {
+    "name": "Structured Data",
+    "settings": [
+      {
+        "type": "text",
+        "id": "shipping_rate",
+        "label": "Default shipping rate for structured data",
+        "default": "6.95",
+        "info": "Used in product and collection structured data. Enter a flat rate (e.g. 6.95)."
+      }
+      ,
+      {
+        "type": "text",
+        "id": "free_shipping_minimum",
+        "label": "Free shipping minimum for structured data",
+        "default": "100",
+        "info": "Orders at or above this amount are considered free shipping in structured data. Enter a number (e.g. 100)."
+      }
+     ,
+     {
+       "type": "select",
+       "id": "return_fees",
+       "label": "Return fees for structured data",
+       "default": "FreeReturn",
+       "options": [
+         { "value": "FreeReturn", "label": "Free Return" },
+         { "value": "OriginalShippingFees", "label": "Original Shipping Fees" },
+         { "value": "RestockingFees", "label": "Restocking Fees" },
+         { "value": "ReturnShippingFees", "label": "Return Shipping Fees" },
+         { "value": "NoRefund", "label": "No Refund" }
+       ],
+       "info": "Select the return fee policy for your store's structured data."
+     },
+     {
+       "type": "select",
+       "id": "refund_type",
+       "label": "Refund type for structured data",
+       "default": "FullRefund",
+       "options": [
+         { "value": "FullRefund", "label": "Full Refund" },
+         { "value": "StoreCredit", "label": "Store Credit" },
+         { "value": "Exchange", "label": "Exchange" },
+         { "value": "NoRefund", "label": "No Refund" }
+       ],
+       "info": "Select the refund type for your store's structured data."
+     }
     ]
   },
   {
@@ -1391,6 +1450,19 @@
         "default": false,
         "label": "t:settings_schema.search_input.settings.predictive_search_show_price.label",
         "info": "t:settings_schema.search_input.settings.predictive_search_show_price.info"
+      },
+      {
+        "id": "search--product-heading",
+        "label": "Popular product heading",
+        "type": "text",
+        "default": "Popular products"
+      },
+      {
+        "type": "product_list",
+        "id": "popular_product_list",
+        "label": "Popular products",
+        "limit": 4,
+        "info": "If left blank will be populated with the most sold products."
       }
     ]
   },

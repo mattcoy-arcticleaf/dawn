@@ -2,25 +2,24 @@
   Renders product variant options
 
   Accepts:
-  - product: {Object} product object.
-  - option: {Object} current product_option object.
-  - block: {Object} block object.
-  - picker_type: {String} type of picker to dispay
-
+  - variant_options_product: {Object} product object.
+  - variant_options_option: {Object} current product_option object.
+  - variant_options_block: {Object} block object.
+  - variant_options_picker_type: {String} type of picker to dispay
 
   Usage:
   {% render 'product-variant-options',
-    product: product,
-    option: option,
-    block: block
-    picker_type: picker_type
+    variant_options_product: product,
+    variant_options_option: option,
+    variant_options_block: block,
+    variant_options_picker_type: picker_type
   %}
 {% endcomment %}
 {%- liquid
   assign product_form_id = 'product-form-' | append: section.id
 -%}
 
-{%- for value in option.values -%}
+{%- for value in variant_options_option.values -%}
   {%- liquid
     assign swatch_focal_point = null
     if value.swatch.image
@@ -40,11 +39,11 @@
   -%}
 
   {%- capture input_id -%}
-    {{ section.id }}-{{ option.position }}-{{ forloop.index0 -}}
+    {{ section.id }}-{{ variant_options_option.position }}-{{ forloop.index0 -}}
   {%- endcapture -%}
 
   {%- capture input_name -%}
-    {{ option.name }}-{{ option.position }}
+    {{ variant_options_option.name }}-{{ variant_options_option.position }}
   {%- endcapture -%}
 
   {%- capture input_dataset -%}
@@ -58,7 +57,7 @@
     </span>
   {%- endcapture -%}
 
-  {%- if picker_type == 'swatch' -%}
+  {%- if variant_options_picker_type == 'swatch' -%}
     {%- capture help_text -%}
       <span class="visually-hidden">{{ value | escape }}</span>
       {{ label_unavailable }}
@@ -72,11 +71,11 @@
       product_form_id: product_form_id,
       checked: value.selected,
       visually_disabled: option_disabled,
-      shape: block.settings.swatch_shape,
+      shape: variant_options_block.settings.swatch_shape,
       help_text: help_text,
       additional_props: input_dataset
     %}
-  {%- elsif picker_type == 'button' -%}
+  {%- elsif variant_options_picker_type == 'button' -%}
     <input
       type="radio"
       id="{{ input_id }}"
@@ -95,14 +94,14 @@
       {{ value -}}
       {{ label_unavailable }}
     </label>
-  {%- elsif picker_type == 'dropdown' or picker_type == 'swatch_dropdown' -%}
+  {%- elsif variant_options_picker_type == 'dropdown' or variant_options_picker_type == 'swatch_dropdown' -%}
     <option
       id="{{ input_id }}"
       value="{{ value | escape }}"
       {% if value.selected %}
         selected="selected"
       {% endif %}
-      {% if swatch_value and picker_type == 'swatch_dropdown' %}
+      {% if swatch_value and variant_options_picker_type == 'swatch_dropdown' %}
         data-option-swatch-value="{{ swatch_value }}"
         {% if swatch_focal_point %}
           data-option-swatch-focal-point="{{ swatch_focal_point }}"

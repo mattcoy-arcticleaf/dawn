@@ -173,3 +173,11 @@
 .article-template__back:last-child {
   margin-bottom: 3.2rem;
 }
+
+.article-breadcrumb-container.page-width.page-width--narrow{
+  font-size: 14px;
+}
+.article-breadcrumb-container.page-width.page-width--narrow a{
+  text-decoration: none;
+  color: #787878;
+}

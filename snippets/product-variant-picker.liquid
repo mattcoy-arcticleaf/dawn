@@ -2,12 +2,15 @@
   Renders product variant-picker
 
   Accepts:
-  - product: {Object} product object.
-  - block: {Object} passing the block information.
-  - product_form_id: {String} Id of the product form to which the variant picker is associated.
+  - variant_picker_product: {Object} product object.
+  - variant_picker_block: {Object} passing the block information.
+  - variant_picker_product_form_id: {String} Id of the product form to which the variant picker is associated.
   Usage:
-  {% render 'product-variant-picker', product: product, block: block, product_form_id: product_form_id %}
+  {% render 'product-variant-picker', variant_picker_product: product, variant_picker_block: block, variant_picker_product_form_id: product_form_id %}
 {% endcomment %}
+{%- assign product = variant_picker_product | default: product -%}
+{%- assign block = variant_picker_block | default: block -%}
+{%- assign product_form_id = variant_picker_product_form_id | default: product_form_id -%}
 {%- unless product.has_only_default_variant -%}
   <variant-selects
     id="variant-selects-{{ section.id }}"
@@ -36,20 +39,20 @@
             </span>
           </legend>
           {% render 'product-variant-options',
-            product: product,
-            option: option,
-            block: block,
-            picker_type: picker_type
+            variant_options_product: product,
+            variant_options_option: option,
+            variant_options_block: block,
+            variant_options_picker_type: picker_type
           %}
         </fieldset>
       {%- elsif picker_type == 'button' -%}
         <fieldset class="js product-form__input product-form__input--pill">
           <legend class="form__label">{{ option.name }}</legend>
           {% render 'product-variant-options',
-            product: product,
-            option: option,
-            block: block,
-            picker_type: picker_type
+            variant_options_product: product,
+            variant_options_option: option,
+            variant_options_block: block,
+            variant_options_picker_type: picker_type
           %}
         </fieldset>
       {%- else -%}
@@ -73,10 +76,10 @@
               form="{{ product_form_id }}"
             >
               {% render 'product-variant-options',
-                product: product,
-                option: option,
-                block: block,
-                picker_type: picker_type
+                variant_options_product: product,
+                variant_options_option: option,
+                variant_options_block: block,
+                variant_options_picker_type: picker_type
               %}
             </select>
             <span class="svg-wrapper">

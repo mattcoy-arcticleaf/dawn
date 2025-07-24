@@ -120,7 +120,7 @@ cart-drawer-items.is-empty + .drawer__footer {
 }
 
 .drawer__footer > details {
-  margin-top: -1.5rem;
+  margin-top: 0;
   border-bottom: 0.1rem solid rgba(var(--color-foreground), 0.2);
 }
 

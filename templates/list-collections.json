@@ -2,14 +2,51 @@
   "sections": {
     "main": {
       "type": "main-list-collections",
+      "disabled": true,
       "settings": {
-        "title": "Collections",
+        "extra_class": "homepage_collectionlist",
+        "title": "❤︎ COLLECTIONS ❤︎",
         "sort": "alphabetical",
-        "image_ratio": "square"
+        "image_ratio": "portrait",
+        "columns_desktop": 3,
+        "columns_mobile": "2"
+      }
+    },
+    "ctm_collection_list_DTLJHA": {
+      "type": "ctm-collection-list",
+      "settings": {
+        "extra_class": "homepage_collectionlist",
+        "title": "❤︎ COLLECTIONS ❤︎",
+        "collection_list": [
+          "accessories",
+          "best-sellers",
+          "bottoms",
+          "dresses",
+          "brynn-pullovers",
+          "clementine-cutie-dresses",
+          "eras-tour",
+          "gameday",
+          "gifts-under-30",
+          "graphic-tees-crewnecks",
+          "holiday",
+          "homecoming-dresses",
+          "jewelry",
+          "just-in",
+          "outerwear",
+          "pajamas",
+          "athletic-collection",
+          "fourth-of-july",
+          "sassy-merch",
+          "swim",
+          "white-dresses",
+          "tops",
+          "bows"
+        ]
       }
     }
   },
   "order": [
-    "main"
+    "main",
+    "ctm_collection_list_DTLJHA"
   ]
 }

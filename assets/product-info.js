@@ -17,6 +17,13 @@ if (!customElements.get('product-info')) {
         this.quantityInput = this.querySelector('.quantity__input');
       }
 
+      /**
+       * Called when the element is added to the DOM.
+       * - Sets up product swap utilities (for transitions/animations)
+       * - Subscribes to variant change events (option selection)
+       * - Initializes quantity input handlers
+       * - Dispatches a custom event to signal the component is loaded
+       */
       connectedCallback() {
         this.initializeProductSwapUtility();
 
@@ -29,10 +36,20 @@ if (!customElements.get('product-info')) {
         this.dispatchEvent(new CustomEvent('product-info:loaded', { bubbles: true }));
       }
 
+      /**
+       * Adds a callback to be run before processing new HTML during a product swap.
+       * @param {Function} callback - Function to run before processing HTML. Used for DOM cleanup or mutation before swap.
+       */
       addPreProcessCallback(callback) {
         this.preProcessHtmlCallbacks.push(callback);
       }
 
+      /**
+       * Initializes quantity input handlers and subscribes to cart update events if needed.
+       * - Sets up reference to the quantity form
+       * - Sets min/max/step boundaries for quantity input
+       * - Subscribes to cart update events if not in a quick view/modal
+       */
       initQuantityHandlers() {
         if (!this.quantityInput) return;
 
@@ -45,11 +62,20 @@ if (!customElements.get('product-info')) {
         }
       }
 
+      /**
+       * Called when the element is removed from the DOM.
+       * - Unsubscribes from all event listeners to prevent memory leaks
+       */
       disconnectedCallback() {
         this.onVariantChangeUnsubscriber();
         this.cartUpdateUnsubscriber?.();
       }
 
+      /**
+       * Sets up callbacks for product swap transitions and post-processing.
+       * - Pre-process: cancels scroll-trigger animations on new HTML
+       * - Post-process: re-initializes Shopify payment buttons and 3D model viewer
+       */
       initializeProductSwapUtility() {
         this.preProcessHtmlCallbacks.push((html) =>
           html.querySelectorAll('.scroll-trigger').forEach((element) => element.classList.add('scroll-trigger--cancel'))
@@ -60,6 +86,13 @@ if (!customElements.get('product-info')) {
         });
       }
 
+      /**
+       * Handles option/variant value changes (e.g. user selects a different size or color).
+       * - Resets product form state
+       * - Determines if a full product swap is needed
+       * - Fetches and renders new product info from the server
+       * @param {Object} param0 - Event data object containing event, target, and selectedOptionValues.
+       */
       handleOptionValueChange({ data: { event, target, selectedOptionValues } }) {
         if (!this.contains(event.target)) return;
 
@@ -79,12 +112,21 @@ if (!customElements.get('product-info')) {
         });
       }
 
+      /**
+       * Resets the product form state (enables submit button, clears error messages).
+       */
       resetProductFormState() {
         const productForm = this.productForm;
         productForm?.toggleSubmitButton(true);
         productForm?.handleErrorMessage();
       }
 
+      /**
+       * Returns a callback to handle swapping the entire product info section or just part of it.
+       * @param {string} productUrl - The URL for the new product/variant.
+       * @param {boolean} updateFullPage - Whether to update the full page or just the product info.
+       * @returns {Function} Callback to process the fetched HTML and update the DOM accordingly.
+       */
       handleSwapProduct(productUrl, updateFullPage) {
         return (html) => {
           this.productModal?.remove();
@@ -113,6 +155,13 @@ if (!customElements.get('product-info')) {
         };
       }
 
+      /**
+       * Fetches and renders updated product info HTML from Shopify's section endpoint.
+       * @param {Object} param0 - Object with requestUrl, targetId, and callback.
+       * - requestUrl: URL to fetch new HTML from
+       * - targetId: ID of the option/variant input that triggered the change
+       * - callback: Function to update the DOM with the new HTML
+       */
       renderProductInfo({ requestUrl, targetId, callback }) {
         this.abortController?.abort();
         this.abortController = new AbortController();
@@ -137,11 +186,23 @@ if (!customElements.get('product-info')) {
           });
       }
 
+      /**
+       * Extracts the selected variant object from a product info HTML node.
+       * @param {HTMLElement} productInfoNode - The node to search for variant data.
+       * @returns {Object|null} The selected variant object or null if not found.
+       */
       getSelectedVariant(productInfoNode) {
         const selectedVariant = productInfoNode.querySelector('variant-selects [data-selected-variant]')?.innerHTML;
         return !!selectedVariant ? JSON.parse(selectedVariant) : null;
       }
 
+      /**
+       * Builds a request URL with query parameters for fetching product info.
+       * @param {string} url - Base product URL.
+       * @param {Array} optionValues - Selected option values.
+       * @param {boolean} [shouldFetchFullPage=false] - Whether to fetch the full page.
+       * @returns {string} The constructed URL for the fetch request.
+       */
       buildRequestUrlWithParams(url, optionValues, shouldFetchFullPage = false) {
         const params = [];
 
@@ -154,6 +215,11 @@ if (!customElements.get('product-info')) {
         return `${url}?${params.join('&')}`;
       }
 
+      /**
+       * Updates the option value selectors in the DOM with new HTML.
+       * @param {HTMLElement} html - The new HTML to update from.
+       * - Swaps in new variant selectors using a smooth transition utility
+       */
       updateOptionValues(html) {
         const variantSelects = html.querySelector('variant-selects');
         if (variantSelects) {
@@ -161,6 +227,13 @@ if (!customElements.get('product-info')) {
         }
       }
 
+      /**
+       * Returns a callback to update product info (price, SKU, inventory, etc.) after a variant change.
+       * @param {string} productUrl - The URL for the new product/variant.
+       * @returns {Function} Callback to process the fetched HTML and update all relevant DOM fields.
+       * - Updates price, SKU, inventory, volume pricing, per-item price, quantity rules, and submit button state
+       * - Publishes a variant change event for analytics or other scripts
+       */
       handleUpdateProductInfo(productUrl) {
         return (html) => {
           const variant = this.getSelectedVariant(html);
@@ -177,30 +250,38 @@ if (!customElements.get('product-info')) {
 
           this.updateMedia(html, variant?.featured_media?.id);
 
+          // Helper function to update a destination DOM element with new HTML from the server.
+          // id: The base id of the element to update (e.g. 'price', 'Sku').
+          // shouldHide: Optional function to determine if the destination should be hidden based on the new source element.
+          // This is used to update price, SKU, inventory, etc. after a variant change.
           const updateSourceFromDestination = (id, shouldHide = (source) => false) => {
-            const source = html.getElementById(`${id}-${this.sectionId}`);
-            const destination = this.querySelector(`#${id}-${this.dataset.section}`);
+            const source = html.getElementById(`${id}-${this.sectionId}`); 
+            const destination = this.querySelector(`#${id}-${this.dataset.section}`); 
             if (source && destination) {
-              destination.innerHTML = source.innerHTML;
-              destination.classList.toggle('hidden', shouldHide(source));
+              destination.innerHTML = source.innerHTML; 
+              destination.classList.toggle('hidden', shouldHide(source)); 
             }
           };
 
+          // Update all key product info fields in the DOM with new HTML from the server
           updateSourceFromDestination('price');
-          updateSourceFromDestination('Sku', ({ classList }) => classList.contains('hidden'));
-          updateSourceFromDestination('Inventory', ({ innerText }) => innerText === '');
-          updateSourceFromDestination('Volume');
+          updateSourceFromDestination('Sku', ({ classList }) => classList.contains('hidden')); 
+          updateSourceFromDestination('Inventory', ({ innerText }) => innerText === ''); 
+          updateSourceFromDestination('Volume'); 
           updateSourceFromDestination('Price-Per-Item', ({ classList }) => classList.contains('hidden'));
 
+          // Update quantity rules and show relevant notes
           this.updateQuantityRules(this.sectionId, html);
           this.querySelector(`#Quantity-Rules-${this.dataset.section}`)?.classList.remove('hidden');
           this.querySelector(`#Volume-Note-${this.dataset.section}`)?.classList.remove('hidden');
 
+          // Enable or disable the submit button based on new variant state
           this.productForm?.toggleSubmitButton(
             html.getElementById(`ProductSubmitButton-${this.sectionId}`)?.hasAttribute('disabled') ?? true,
             window.variantStrings.soldOut
           );
 
+          // Publish a variant change event for other scripts/components to react to
           publish(PUB_SUB_EVENTS.variantChange, {
             data: {
               sectionId: this.sectionId,
@@ -211,6 +292,11 @@ if (!customElements.get('product-info')) {
         };
       }
 
+      /**
+       * Updates hidden variant input fields in product forms with the new variant ID.
+       * @param {string|number} variantId - The new variant ID.
+       * - Updates the value and dispatches a change event for each relevant form
+       */
       updateVariantInputs(variantId) {
         this.querySelectorAll(
           `#product-form-${this.dataset.section}, #product-form-installment-${this.dataset.section}`
@@ -221,6 +307,12 @@ if (!customElements.get('product-info')) {
         });
       }
 
+      /**
+       * Updates the browser URL and share button with the new variant.
+       * @param {string} url - The product URL.
+       * @param {string|number} variantId - The variant ID.
+       * - Updates browser history and share button for deep-linking and sharing
+       */
       updateURL(url, variantId) {
         this.querySelector('share-button')?.updateUrl(
           `${window.shopUrl}${url}${variantId ? `?variant=${variantId}` : ''}`
@@ -230,6 +322,11 @@ if (!customElements.get('product-info')) {
         window.history.replaceState({}, '', `${url}${variantId ? `?variant=${variantId}` : ''}`);
       }
 
+      /**
+       * Sets the product form and related UI to an unavailable state (e.g. sold out or unavailable variant).
+       * - Disables submit button
+       * - Hides price, inventory, SKU, and other product info fields
+       */
       setUnavailable() {
         this.productForm?.toggleSubmitButton(true, window.variantStrings.unavailable);
 
@@ -239,6 +336,12 @@ if (!customElements.get('product-info')) {
         document.querySelectorAll(selectors).forEach(({ classList }) => classList.add('hidden'));
       }
 
+      /**
+       * Updates the product media gallery and modal with new variant media.
+       * @param {HTMLElement} html - The new HTML to update from.
+       * @param {string|number} variantFeaturedMediaId - The featured media ID for the variant.
+       * - Swaps in new media gallery items and updates the modal content
+       */
       updateMedia(html, variantFeaturedMediaId) {
         if (!variantFeaturedMediaId) return;
 
@@ -310,6 +413,10 @@ if (!customElements.get('product-info')) {
         if (modalContent && newModalContent) modalContent.innerHTML = newModalContent.innerHTML;
       }
 
+      /**
+       * Sets the min/max/step boundaries for the quantity input based on inventory/cart state.
+       * - Updates quantity input DOM attributes and publishes a quantity update event
+       */
       setQuantityBoundries() {
         const data = {
           cartQuantity: this.quantityInput.dataset.cartQuantity ? parseInt(this.quantityInput.dataset.cartQuantity) : 0,
@@ -335,6 +442,11 @@ if (!customElements.get('product-info')) {
         publish(PUB_SUB_EVENTS.quantityUpdate, undefined);
       }
 
+      /**
+       * Fetches updated quantity rules for the current variant and updates the DOM.
+       * - Shows a loading spinner while fetching
+       * - Updates quantity rules UI with new HTML from the server
+       */
       fetchQuantityRules() {
         const currentVariantId = this.productForm?.variantIdInput?.value;
         if (!currentVariantId) return;
@@ -350,6 +462,12 @@ if (!customElements.get('product-info')) {
           .finally(() => this.querySelector('.quantity__rules-cart .loading__spinner').classList.add('hidden'));
       }
 
+      /**
+       * Updates the quantity rules UI with new HTML for the given section.
+       * @param {string|number} sectionId - The section ID.
+       * @param {HTMLElement} html - The new HTML to update from.
+       * - Updates quantity input, rules, and label in the DOM
+       */
       updateQuantityRules(sectionId, html) {
         if (!this.quantityInput) return;
         this.setQuantityBoundries();

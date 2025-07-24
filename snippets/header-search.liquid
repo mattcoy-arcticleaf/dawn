@@ -103,6 +103,40 @@
           </span>
         </button>
       </div>
+      <div
+      class="search--results"
+      id="predictive-search-results-list"
+      {% unless settings.transitions--disabled %}
+        data-transition-container="search"
+        data-transition-type="fade-in"
+        data-transition-cascade="horizontal"
+        data-transition-cascade-interval="200"
+      {% endunless %}
+    >
+      {%- render 'predictive-search' -%}
+    </div>
+    <div class="popular-products">
+        <div class="popular-products_title">
+          <h5>{{ settings.search--product-heading }}</h5>
+        </div>
+        <div class="popular-products_list">
+          {% assign selected_products = settings.popular_product_list %}
+        
+          {% for product in selected_products %}
+            <div class="product-item">
+              <a href="{{ product.url }}">
+                <div class="product-img">
+                  <img src="{{ product.featured_image | image_url: width: 302 }}" width="302" height="402" alt="{{ product.title }}">
+                </div>
+                <div class="product-details">
+                  <h6>{{ product.title }}</h6>
+                  <p>{{ product.price | money }}</p>
+                </div>
+                </a>
+            </div>
+          {% endfor %}
+        </div>        
+    </div>
     </div>
   </details>
 </details-modal>

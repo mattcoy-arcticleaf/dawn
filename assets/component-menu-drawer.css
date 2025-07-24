@@ -96,6 +96,7 @@ details[open].menu-opening > .menu-drawer__submenu {
 
 .js .menu-drawer__menu li {
   margin-bottom: 0.2rem;
+  text-transform: uppercase;
 }
 
 .menu-drawer__menu-item {
@@ -106,6 +107,7 @@ details[open].menu-opening > .menu-drawer__submenu {
 
 .menu-drawer summary.menu-drawer__menu-item {
   padding-right: 5.2rem;
+  text-transform: uppercase;
 }
 
 .menu-drawer__menu-item--active,

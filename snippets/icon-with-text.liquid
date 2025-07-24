@@ -1,109 +1,68 @@
 {% comment %}
-  Renders icon with text block
-
-  Accepts:
-  - block: {Object} passes in the block information.
-
-
-  Usage:
-  {% render 'icon-with-text',
-    block: block
-  %}
+  icon-with-text: only shows items with non-blank headings,
+  and only renders the whole block if any heading exists.
 {% endcomment %}
+
 {%- liquid
-  assign heading_1_empty = false
-  assign heading_2_empty = false
-  assign heading_3_empty = false
-  assign text_only_all_items = true
+  # Grab prefixes
+  assign prefix1 = block.settings.prefix_text_1 | strip
+  assign prefix2 = block.settings.prefix_text_2 | strip
+  assign prefix3 = block.settings.prefix_text_3 | strip
 
-  if block.settings.heading_1 == empty
-    assign heading_1_empty = true
-  endif
+  # Grab headings, stripping whitespace
+  assign h1 = block.settings.heading_1 | strip
+  assign h2 = block.settings.heading_2 | strip
+  assign h3 = block.settings.heading_3 | strip
 
-  if block.settings.heading_2 == empty
-    assign heading_2_empty = true
-  endif
-
-  if block.settings.heading_3 == empty
-    assign heading_3_empty = true
-  endif
-
-  if heading_1_empty == false and block.settings.icon_1 != 'none' or block.settings.image_1 != null
-    assign text_only_all_items = false
-  elsif heading_2_empty == false and block.settings.icon_2 != 'none' or block.settings.image_2 != null
-    assign text_only_all_items = false
-  elsif heading_3_empty == false and block.settings.icon_3 != 'none' or block.settings.image_3 != null
-    assign text_only_all_items = false
+  # Only render block if at least one heading is non-blank
+  assign render_block = false
+  if h1 != '' or h2 != '' or h3 != ''
+    assign render_block = true
   endif
 -%}
-<ul
-  class="icon-with-text icon-with-text--{{ block.settings.layout }} list-unstyled{% if text_only_all_items %} icon-with-text--text-only{% endif %}"
-  {{ block.shopify_attributes }}
->
-  {%- unless heading_1_empty -%}
+
+{%- if render_block -%}
+<ul class="icon-with-text icon-with-text--{{ block.settings.layout }} list-unstyled"
+    {{ block.shopify_attributes }}>
+
+  {%- if h1 != '' -%}
     <li class="icon-with-text__item">
-      {%- if block.settings.image_1 == null -%}
-        {%- render 'icon-accordion', icon: block.settings.icon_1 -%}
-      {%- else -%}
-        <img
-          src="{{ block.settings.image_1 | image_url }}"
-          {% if block.settings.image_1.alt != blank %}
-            alt="{{ block.settings.image_1.alt | escape }}"
-          {% else %}
-            role="presentation"
-          {% endif %}
-          height="auto"
-          width="auto"
-          loading="lazy"
-        >
+      {%- if block.settings.image_1 -%}
+        <img src="{{ block.settings.image_1 | image_url }}" loading="lazy" role="presentation">
+      {%- elsif block.settings.icon_1 != 'none' -%}
+        {% render 'icon-accordion', icon: block.settings.icon_1 %}
       {%- endif -%}
       <span class="h4 inline-richtext">
-        {{- block.settings.heading_1 -}}
+        {%- if prefix1 != '' -%}{{ prefix1 }} {% endif -%}{{ h1 }}
       </span>
     </li>
-  {%- endunless -%}
-  {%- unless heading_2_empty -%}
+  {%- endif -%}
+
+  {%- if h2 != '' -%}
     <li class="icon-with-text__item">
-      {%- if block.settings.image_2 == null -%}
-        {% render 'icon-accordion', icon: block.settings.icon_2 -%}
-      {%- else -%}
-        <img
-          src="{{ block.settings.image_2 | image_url }}"
-          {% if block.settings.image_2.alt != blank %}
-            alt="{{ block.settings.image_2.alt | escape }}"
-          {% else %}
-            role="presentation"
-          {% endif %}
-          height="auto"
-          width="auto"
-          loading="lazy"
-        >
+      {%- if block.settings.image_2 -%}
+        <img src="{{ block.settings.image_2 | image_url }}" loading="lazy" role="presentation">
+      {%- elsif block.settings.icon_2 != 'none' -%}
+        {% render 'icon-accordion', icon: block.settings.icon_2 %}
       {%- endif -%}
       <span class="h4 inline-richtext">
-        {{- block.settings.heading_2 -}}
+        {%- if prefix2 != '' -%}{{ prefix2 }} {% endif -%}{{ h2 }}
       </span>
     </li>
-  {%- endunless -%}
-  {%- unless heading_3_empty -%}
+  {%- endif -%}
+
+  {%- if h3 != '' -%}
     <li class="icon-with-text__item">
-      {%- if block.settings.image_3 == null -%}
-        {% render 'icon-accordion', icon: block.settings.icon_3 -%}
-      {%- else -%}
-        <img
-          src="{{ block.settings.image_3 | image_url }}"
-          {% if block.settings.image_3.alt != blank %}
-            alt="{{ block.settings.image_3.alt | escape }}"
-          {% else %}
-            role="presentation"
-          {% endif %}
-          height="auto"
-          width="auto"
-          loading="lazy"
-        >
+      {%- if block.settings.image_3 -%}
+        <img src="{{ block.settings.image_3 | image_url }}" loading="lazy" role="presentation">
+      {%- elsif block.settings.icon_3 != 'none' -%}
+        {% render 'icon-accordion', icon: block.settings.icon_3 %}
       {%- endif -%}
       <span class="h4 inline-richtext">
-        {{- block.settings.heading_3 -}}
+        {%- if prefix3 != '' -%}{{ prefix3 }} {% endif -%}{{ h3 }}
       </span>
     </li>
-  {%- endunless -%}
+  {%- endif -%}
+
 </ul>
+{%- endif -%}

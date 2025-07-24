@@ -151,7 +151,17 @@ quantity-popover .quantity__rules span:first-of-type {
 }
 
 quantity-popover .quantity {
-  background: rgb(var(--color-background));
+  background: #FF9BB0;
+  color: #fff;
+  font-weight: 800;
+}
+
+quantity-popover .quantity__button svg path {
+  fill: #fff;
+}
+
+.quantity__button .svg-wrapper {
+  width: 16px;
 }
 
 quantity-popover .quantity__rules {

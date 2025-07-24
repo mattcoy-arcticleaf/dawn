@@ -19,6 +19,11 @@
 <meta property="og:type" content="{{ og_type }}">
 <meta property="og:description" content="{{ og_description | escape }}">
 
+{% if request.page_type == 'product' %}
+  <meta property="product:price:amount" content="{{ product.price | money_without_currency | strip_html }}" />
+  <meta property="product:price:currency" content="{{ shop.currency }}" />
+{% endif %}
+
 {%- if page_image -%}
   <meta property="og:image" content="http:{{ page_image | image_url }}">
   <meta property="og:image:secure_url" content="https:{{ page_image | image_url }}">
@@ -37,3 +42,10 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{{ og_title | escape }}">
 <meta name="twitter:description" content="{{ og_description | escape }}">
+
+
+{% comment %} No index app based URLs {% endcomment %}
+ {% if request.path contains '/a/return' %}
+       <meta name="robots" content="noindex,nofollow">
+{% endif %}
+{% comment %} End- No index app based URLs {% endcomment %}

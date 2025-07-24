@@ -13,6 +13,7 @@ cart-items .title-wrapper-with-link {
   padding-bottom: 1.8rem;
   opacity: 0.85;
   font-weight: normal;
+  font-size: 16px;
 }
 
 .cart-item__quantity-wrapper {
@@ -74,11 +75,17 @@ cart-items .title-wrapper-with-link {
   top: 0;
   width: 100%;
   height: 100%;
+  z-index: 99; 
 }
 
 .cart-item__name {
   text-decoration: none;
   display: block;
+  font-size: 16px;
+}
+
+.cart-item .price {
+  font-size: 2rem;
 }
 
 .cart-item__name:hover {
@@ -110,7 +117,7 @@ cart-items .title-wrapper-with-link {
 }
 
 .product-option {
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   word-break: break-word;
   line-height: calc(1 + 0.5 / var(--font-body-scale));
 }

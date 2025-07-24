@@ -1,0 +1,299 @@
+{
+  "sections": {
+    "image_banner_M4AXAK": {
+      "type": "image-banner",
+      "blocks": {
+        "heading_TJLaVg": {
+          "type": "heading",
+          "disabled": true,
+          "settings": {
+            "heading": "Image banner",
+            "heading_size": "h1"
+          }
+        },
+        "text_9LjHib": {
+          "type": "text",
+          "disabled": true,
+          "settings": {
+            "text": "Give customers details about the banner image(s) or content on the template.",
+            "text_style": "body"
+          }
+        },
+        "buttons_PDVXKq": {
+          "type": "buttons",
+          "disabled": true,
+          "settings": {
+            "button_label_1": "Button label",
+            "button_link_1": "",
+            "button_style_secondary_1": false,
+            "button_label_2": "Button label",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_TJLaVg",
+        "text_9LjHib",
+        "buttons_PDVXKq"
+      ],
+      "settings": {
+        "image": "shopify:\/\/shop_images\/13_copy.png",
+        "image_url": "",
+        "sec_image_url": "",
+        "image_overlay_opacity": 0,
+        "image_height": "adapt",
+        "desktop_content_position": "middle-center",
+        "show_text_box": true,
+        "desktop_content_alignment": "center",
+        "color_scheme": "",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": true,
+        "show_text_below": true
+      }
+    },
+    "image_banner_Ti9nhj": {
+      "type": "image-banner",
+      "blocks": {
+        "heading_Jcqp6R": {
+          "type": "heading",
+          "disabled": true,
+          "settings": {
+            "heading": "Image banner",
+            "heading_size": "h1"
+          }
+        },
+        "text_LYDxNg": {
+          "type": "text",
+          "disabled": true,
+          "settings": {
+            "text": "Give customers details about the banner image(s) or content on the template.",
+            "text_style": "body"
+          }
+        },
+        "buttons_LP6k4M": {
+          "type": "buttons",
+          "disabled": true,
+          "settings": {
+            "button_label_1": "Button label",
+            "button_link_1": "",
+            "button_style_secondary_1": false,
+            "button_label_2": "Button label",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_Jcqp6R",
+        "text_LYDxNg",
+        "buttons_LP6k4M"
+      ],
+      "settings": {
+        "image": "shopify:\/\/shop_images\/13_fe2fc8e7-e232-4875-ad39-183507e8d31e.png",
+        "image_url": "",
+        "sec_image_url": "",
+        "image_overlay_opacity": 0,
+        "image_height": "adapt",
+        "desktop_content_position": "middle-center",
+        "show_text_box": true,
+        "desktop_content_alignment": "center",
+        "color_scheme": "",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": true,
+        "show_text_below": true
+      }
+    },
+    "image_banner_jraTGE": {
+      "type": "image-banner",
+      "blocks": {
+        "heading_A8Fcw8": {
+          "type": "heading",
+          "disabled": true,
+          "settings": {
+            "heading": "Image banner",
+            "heading_size": "h1"
+          }
+        },
+        "text_W6TteP": {
+          "type": "text",
+          "disabled": true,
+          "settings": {
+            "text": "Give customers details about the banner image(s) or content on the template.",
+            "text_style": "body"
+          }
+        },
+        "buttons_fy8F7P": {
+          "type": "buttons",
+          "disabled": true,
+          "settings": {
+            "button_label_1": "Button label",
+            "button_link_1": "",
+            "button_style_secondary_1": false,
+            "button_label_2": "Button label",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_A8Fcw8",
+        "text_W6TteP",
+        "buttons_fy8F7P"
+      ],
+      "disabled": true,
+      "settings": {
+        "image": "shopify:\/\/shop_images\/Untitled_design_11.png",
+        "image_url": "",
+        "sec_image_url": "",
+        "image_overlay_opacity": 0,
+        "image_height": "adapt",
+        "desktop_content_position": "middle-center",
+        "show_text_box": true,
+        "desktop_content_alignment": "center",
+        "color_scheme": "",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": true,
+        "show_text_below": true
+      }
+    },
+    "image_banner_UT8gcU": {
+      "type": "image-banner",
+      "blocks": {
+        "heading_RCTLGY": {
+          "type": "heading",
+          "disabled": true,
+          "settings": {
+            "heading": "Image banner",
+            "heading_size": "h1"
+          }
+        },
+        "text_fCxQNH": {
+          "type": "text",
+          "disabled": true,
+          "settings": {
+            "text": "Give customers details about the banner image(s) or content on the template.",
+            "text_style": "body"
+          }
+        },
+        "buttons_Wf8Xgi": {
+          "type": "buttons",
+          "disabled": true,
+          "settings": {
+            "button_label_1": "Button label",
+            "button_link_1": "",
+            "button_style_secondary_1": false,
+            "button_label_2": "Button label",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_RCTLGY",
+        "text_fCxQNH",
+        "buttons_Wf8Xgi"
+      ],
+      "settings": {
+        "image": "shopify:\/\/shop_images\/14_17d6c3d9-cc12-4e68-a406-68b36a84f77d.png",
+        "image_url": "",
+        "sec_image_url": "",
+        "image_overlay_opacity": 0,
+        "image_height": "adapt",
+        "desktop_content_position": "middle-center",
+        "show_text_box": true,
+        "desktop_content_alignment": "center",
+        "color_scheme": "",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": true,
+        "show_text_below": true
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "padding_top": 28,
+        "padding_bottom": 28
+      }
+    },
+    "rich_text_Hqt4rQ": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_t4qttn": {
+          "type": "heading",
+          "settings": {
+            "heading": "🎀 About Sassy Shortcake Boutique",
+            "heading_size": "h1"
+          }
+        },
+        "text_JhpwQH": {
+          "type": "text",
+          "settings": {
+            "text": "<p>At <strong>Sassy Shortcake<\/strong>, we're all about bringing <strong>preppy and pink<\/strong> to your wardrobe! 💖<br\/>We believe pink is a neutral, bows belong everywhere, and confidence is your best accessory.<\/p><p>Founded in <strong>2010<\/strong>, our boutique quickly became a staple in Charleston’s fashion scene, originally located on iconic King Street. In <strong>2022<\/strong>, we found our forever home in <strong>Summerville, SC<\/strong> — with a brand-new storefront and full-scale shipping warehouse at:<\/p><p>📍 <strong>405 North Maple Street, Suite B4<\/strong><br\/><em>(Just off the Nexton exit)<\/em><\/p><h3>🎀 Sassy Style<\/h3><p>We carefully curate our collections for the modern-day it-girl:<\/p><ul><li>Flirty dresses<\/li><li>Trend-setting sets<\/li><li>Dreamy tulle<\/li><li>Polished layers<\/li><li>All the accessories that complete <em>that<\/em> outfit<\/li><\/ul><p>Whether you're shopping online or browsing our boutique IRL, our goal is to make you feel <strong>confident, stylish, and a little extra — in the best way possible<\/strong>.<\/p><p>We proudly ship worldwide and are honored to be a <strong>woman-founded, family-run brand<\/strong> with deep local roots and a growing global community. We’ve grown a lot, but our heart is still boutique-level — every order is packed with love, and every style is handpicked with care.<\/p><h3>🎀 Shop Hours (Summerville Location)<\/h3><p><strong>Wednesday–Saturday:<\/strong> 12:00 PM – 6:00 PM<br\/><strong>Sunday–Tuesday:<\/strong> Closed<\/p><p>📍 <strong>Visit us at:<\/strong><br\/>405 North Maple Street, Suite B4<br\/>Summerville, SC 29483<\/p><p><\/p><p>📧 <a>info@sassyshortcake.com<\/a><br\/>💬 Chat with us live on our website!<\/p><h3>💖 Let’s Get Social<\/h3><p>Find new arrivals, behind-the-scenes moments, and outfit inspo on:<\/p><ul><li><a href=\"https:\/\/www.instagram.com\/sassyshortcake\/\">Instagram<\/a><\/li><li><a href=\"https:\/\/www.tiktok.com\/@sassyshortcake\">TikTok<\/a><\/li><li><a href=\"https:\/\/www.pinterest.com\/sassyshortcake\/\">Pinterest<\/a><\/li><li><a href=\"https:\/\/www.facebook.com\/SassyShortcake\/\">Facebook<\/a><\/li><li><a href=\"https:\/\/www.youtube.com\/@sassyshortcake\">YouTube<\/a><\/li><\/ul><h3>🎀 Shop Small. Dream Big.<\/h3><p>We’re so grateful you’re here.<br\/>Thanks for supporting our small business — and for making us part of your style story.<br\/>Now go be fabulous. 💖<\/p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_t4qttn",
+        "text_JhpwQH"
+      ],
+      "custom_css": [
+        "h3 {font: 28px\/70px Josefin Sans, sans-serif;}"
+      ],
+      "settings": {
+        "desktop_content_position": "left",
+        "content_alignment": "left",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "collapsible_content_npxk7E": {
+      "type": "collapsible-content",
+      "blocks": {
+        "collapsible_row_Hc4HiY": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "about sassy shortcake",
+            "icon": "none",
+            "row_content": "",
+            "page": "about-us-new"
+          }
+        }
+      },
+      "block_order": [
+        "collapsible_row_Hc4HiY"
+      ],
+      "disabled": true,
+      "settings": {
+        "caption": "",
+        "heading": "🎀 About Sassy Shortcake Boutique",
+        "heading_size": "h1",
+        "heading_alignment": "center",
+        "layout": "none",
+        "color_scheme": "",
+        "container_color_scheme": "",
+        "open_first_collapsible_row": false,
+        "image_ratio": "adapt",
+        "desktop_layout": "image_second",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    }
+  },
+  "order": [
+    "image_banner_M4AXAK",
+    "image_banner_Ti9nhj",
+    "image_banner_jraTGE",
+    "image_banner_UT8gcU",
+    "main",
+    "rich_text_Hqt4rQ",
+    "collapsible_content_npxk7E"
+  ]
+}

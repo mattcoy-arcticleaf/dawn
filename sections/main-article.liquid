@@ -63,6 +63,21 @@
           {%- endif -%}
         </header>
 
+      {%- when 'breadcrumb' -%}
+        <div class="article-breadcrumb-container page-width page-width--narrow">
+          <a href="/">Home</a>
+          {%- for link in linklists['main-menu'].links -%}
+            {%- if link.url == blog.url -%}
+              <span class="breadcrumb-delimeter" aria-hidden="true"></span>
+              <!-- Breadcrumb Delimeter -->
+              {{ link.title | link_to: link.url }}
+              {% break %}
+            {%- endif -%}
+          {%- endfor -%}
+          <span class="breadcrumb-delimeter" aria-hidden="true"></span>
+          <a href="{{ article.url }}" aria-current="page">{{ article.title }}</a>
+        </div>
+
       {%- when 'content' -%}
         <div
           class="article-template__content page-width page-width--narrow rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
@@ -288,10 +303,6 @@
   {%- endif -%}
 </article>
 
-<script type="application/ld+json">
-  {{ article | structured_data }}
-</script>
-
 {% schema %}
 {
   "name": "t:sections.main-article.name",
@@ -300,6 +311,18 @@
   "blocks": [
     {
       "type": "@app"
+    },
+    {
+      "type": "breadcrumb",
+      "name": "Breadcrumb",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_breadcrumb",
+          "label": "Show Breabcrumb",
+          "default": true
+        }
+      ]
     },
     {
       "type": "featured_image",

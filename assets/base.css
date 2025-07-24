@@ -258,10 +258,10 @@ h5,
 .h3,
 .h4,
 .h5 {
-  font-family: var(--font-heading-family);
+  /* font-family: var(--font-heading-family); */
   font-style: var(--font-heading-style);
   font-weight: var(--font-heading-weight);
-  letter-spacing: calc(var(--font-heading-scale) * 0.06rem);
+  /* letter-spacing: calc(var(--font-heading-scale) * 0.06rem); */
   color: rgb(var(--color-foreground));
   line-height: calc(1 + 0.3 / max(1, var(--font-heading-scale)));
   word-break: break-word;
@@ -305,7 +305,7 @@ h1,
   }
 }
 
-h2,
+/* h2,
 .h2 {
   font-size: calc(var(--font-heading-scale) * 2rem);
 }
@@ -315,7 +315,7 @@ h2,
   .h2 {
     font-size: calc(var(--font-heading-scale) * 2.4rem);
   }
-}
+} */
 
 h3,
 .h3 {
@@ -331,7 +331,7 @@ h3,
 
 h4,
 .h4 {
-  font-family: var(--font-heading-family);
+  /* font-family: var(--font-heading-family); */
   font-style: var(--font-heading-style);
   font-size: calc(var(--font-heading-scale) * 1.5rem);
 }
@@ -1398,6 +1398,10 @@ shopify-accelerated-checkout-cart {
   min-height: 4.4rem;
 }
 
+.product .share-button__button {
+  display: none;
+}
+
 details[open] > .share-button__fallback {
   animation: animateMenuOpen var(--duration-default) ease;
 }
@@ -2250,6 +2254,8 @@ input[type='checkbox'] {
   margin: 0;
   letter-spacing: 0.1rem;
   min-height: 3.8rem;
+  font-size: 13px;
+  text-transform: uppercase;
 }
 
 .announcement-bar-slider--fade-in-next .announcement-bar__message,
@@ -2565,7 +2571,7 @@ input[type='checkbox'] {
 }
 
 .header__icon--menu[aria-expanded='true']::before {
-  content: '';
+  content: none;
   top: 100%;
   left: 0;
   height: calc(var(--viewport-height, 100vh) - (var(--header-bottom-position, 100%)));
@@ -2641,6 +2647,7 @@ menu-drawer + .header__search {
 details[open] > .search-modal {
   opacity: 1;
   animation: animateMenuOpen var(--duration-default) ease;
+  background-color: #fff;
 }
 
 details[open] .modal-overlay {
@@ -2803,6 +2810,10 @@ details[open] > .header__submenu {
 
 .header__menu-item span {
   transition: text-decoration var(--duration-short) ease;
+  letter-spacing: 1px;
+  font-size: 19px;
+  color: rgb(235, 155, 166);
+  text-transform: uppercase;
 }
 
 .header__menu-item:hover span {
@@ -2824,8 +2835,8 @@ details[open] > .header__menu-item .icon-caret {
 
 .header__active-menu-item {
   transition: text-decoration-thickness var(--duration-short) ease;
-  color: rgb(var(--color-foreground));
-  text-decoration: underline;
+  /* color: rgb(var(--color-foreground)); */
+  text-decoration: no-underline;
   text-underline-offset: 0.3rem;
 }
 

@@ -474,6 +474,11 @@
             </cart-note>
           </details>
         {%- endif -%}
+                        {% form 'cart', cart %}
+          <div class="hc-cart-spi">
+            {{ form | payment_terms }}
+          </div>
+        {% endform %}
 
         <!-- Start blocks -->
         <!-- Subtotals -->
@@ -545,7 +550,7 @@
           <button
             type="submit"
             id="CartDrawer-Checkout"
-            class="cart__checkout-button button"
+            class="cart__checkout-button button pink-btn"
             name="checkout"
             form="CartDrawer-Form"
             {% if cart == empty %}

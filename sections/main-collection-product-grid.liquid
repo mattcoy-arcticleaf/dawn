@@ -24,11 +24,11 @@
 
 {%- style -%}
   .section-{{ section.id }}-padding {
-    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
-    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+    padding-top: {{ section.settings.padding_top | times: 0.5 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.5 | round: 0 }}px;
   }
 
-  @media screen and (min-width: 750px) {
+  @media screen and (min-width: 1366px) {
     .section-{{ section.id }}-padding {
       padding-top: {{ section.settings.padding_top }}px;
       padding-bottom: {{ section.settings.padding_bottom }}px;
@@ -37,11 +37,25 @@
 {%- endstyle -%}
 
 <div class="section-{{ section.id }}-padding gradient color-{{ section.settings.color_scheme }}">
+  {% comment %} {% if collection.collection_url.value.url != blank and collection.collection_name != blank %} {% endcomment %}
+  <div class="ctm-collection-list container-fluid">
+    {% if collection.metafields.custom.collection_list.value %}
+    <ul>
+      {% for collection in collection.metafields.custom.collection_list.value %}
+          <li>
+            <a href="{{ collection.collection_url.value.url }}">{{ collection.collection_name }}</a>
+          </li>
+      {% endfor %}
+    </ul>   
+    {% endif %}
+  </div>
+    {% comment %} {% endif %} {% endcomment %}
   {%- paginate collection.products by section.settings.products_per_page -%}
     {% comment %} Sort is the first tabbable element when filter type is vertical {% endcomment %}
     {%- if section.settings.enable_sorting and section.settings.filter_type == 'vertical' -%}
       <facet-filters-form class="facets facets-vertical-sort page-width small-hide">
         <form class="facets-vertical-form" id="FacetSortForm">
+          {% comment %}
           <div class="facet-filters sorting caption">
             <div class="facet-filters__field">
               <h2 class="facet-filters__label caption-large text-body">
@@ -72,6 +86,7 @@
               </div>
             </div>
           </div>
+          {% endcomment %}
 
           <div class="product-count-vertical light" role="status">
             <h2 class="product-count__text text-body">
@@ -103,7 +118,7 @@
       {%- if section.settings.enable_filtering or section.settings.enable_sorting -%}
         <aside
           aria-labelledby="verticalTitle"
-          class="facets-wrapper{% unless section.settings.enable_filtering %} facets-wrapper--no-filters{% endunless %}{% if section.settings.filter_type != 'vertical' %} page-width{% endif %}"
+          class="facets-wrapper container-fluid{% unless section.settings.enable_filtering %} facets-wrapper--no-filters{% endunless %}{% if section.settings.filter_type != 'vertical' %} page-widths{% endif %}"
           id="main-collection-filters"
           data-id="{{ section.id }}"
         >
@@ -140,11 +155,12 @@
           </div>
         {%- else -%}
           <div
-            class="collection{% if section.settings.filter_type != 'vertical' %} page-width{% endif %}"
+            class="collection{% if section.settings.filter_type != 'vertical' %} page-widths container-fluid{% endif %}"
           >
             <div class="loading-overlay gradient"></div>
             <ul
               id="product-grid"
+              data-columns="4"
               data-id="{{ section.id }}"
               class="
                 grid product-grid grid--{{ section.settings.columns_mobile }}-col-tablet-down
@@ -188,18 +204,106 @@
           </div>
         {%- endif -%}
       </div>
+      {%- if section.settings.show_collection_description -%}
+        <div class="collection-hero__description rte page-widths container-fluid">{{ collection.description }}</div>
+      {%- endif -%}
     </div>
   {%- endpaginate -%}
   {% if section.settings.image_shape == 'arch' %}
     {{ 'mask-arch.svg' | inline_asset_content }}
   {%- endif -%}
 </div>
+{% paginate collection.products by section.settings.products_per_page %}
+<script type="application/ld+json">
+ {
+      "@context":"https://schema.org",
+      "@type":"ItemList",
+      "itemListElement":[ {% for product in collection.products limit: section.settings.products_per_page %}
+        {% assign price = product.price | divided_by: 100.0 %}
+        {
+          "@type":"ListItem",
+          "position":{{ forloop.index }},
 
+         "item":{
+            "@context":"http://schema.org",
+            "@type":"Product",
+            "name":"{{ product.title | replace: '"', '' }}",
+           {% if product.description != blank %}
+            "description": {{ product.description | json }},
+             {% else %}
+             "description": {{  product.title | strip_html | json }},
+    {% endif %}
+            "sku":"{{ product.sku }}",
+            "url":"{{ shop.url }}{{ product.url }}",
+            "image":["{{ product.featured_image | img_url : 'master' }}"],
+            {% if product.metafields.reviews.rating_count and product.metafields.reviews.rating != "0" %}
+              "aggregateRating": {
+                  "@type": "AggregateRating",
+                  "ratingValue": {{ product.metafields.reviews.rating.value }},
+                  "reviewCount": {% if product.metafields.reviews.rating_count > 0 %}{{ product.metafields.reviews.rating_count }}  {% else %} 0 {% endif %},
+                  "bestRating": 5,
+                  "worstRating": 1
+              },
+            {% endif %}
+            "offers":{
+                "@type":"Offer",
+                "priceCurrency":"USD",
+                "price":"{{ product.price  | divided_by: 100.0 }}",
+                "itemCondition":"https://schema.org/NewCondition",
+                "availability":"https://schema.org/InStock",
+                "priceValidUntil": "{{ 'now' | date: "%s" | plus: seconds | date: "%Y-%m-%d" }}",
+                 "hasMerchantReturnPolicy":{
+                      "@type": "MerchantReturnPolicy",
+                    "applicableCountry": "US",
+                    "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+                    "merchantReturnDays": 7,
+                    "returnMethod": "https://schema.org/ReturnByMail"
+                    },
+                  "shippingDetails": {
+                      "@type": "OfferShippingDetails",
+                      "shippingRate": {
+                        "@type": "MonetaryAmount",
+                        "value":  {% if price >= 100 %} 0 {% else %} 6.95{% endif %},
+                        "currency": {{ cart.currency.iso_code | json }} 
+                      },
+                      "deliveryTime": {
+                        "@type": "ShippingDeliveryTime",
+                        "handlingTime": {
+                          "@type": "QuantitativeValue",
+                          "minValue": 1,
+                          "maxValue": 3,
+                          "unitCode": "DAY"
+                        },
+                        "transitTime": {
+                          "@type": "QuantitativeValue",
+                          "minValue": 6,
+                          "maxValue": 9,
+                          "unitCode": "DAY"
+                        }
+                      },
+                      "shippingDestination": {
+                        "@type": "DefinedRegion",
+                        "addressCountry": "US"
+                      }
+                    }
+              }
+          }
+        }{% unless forloop.last %},{% endunless %}
+        {% endfor %}
+      ]
+    }</script>
+  {% endpaginate %}
 {% schema %}
 {
   "name": "t:sections.main-collection-product-grid.name",
   "class": "section",
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_collection_description",
+      "default": true,
+      "label": "t:sections.main-collection-banner.settings.show_collection_description.label"
+    },
     {
       "type": "range",
       "id": "products_per_page",

@@ -1,0 +1,68 @@
+<div class="image-with-link_inner">
+    <div class="main-imagetext">
+        <div class="main_image">
+          {% if section.settings.main_image %}
+            {%- liquid
+                assign height = section.settings.main_image.width | divided_by: section.settings.main_image.aspect_ratio | round
+                if section.settings.image_behavior == 'ambient'
+                  assign sizes = '120vw'
+                  assign widths = '450, 660, 900, 1320, 1800, 2136, 2400, 3600, 7680'
+                else
+                  assign sizes = '100vw'
+                  assign widths = '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840'
+                endif
+                assign fetch_priority = 'high'
+              -%}
+              {{
+                section.settings.main_image
+                | image_url: width: 1920
+                | image_tag: height: height, sizes: sizes, widths: widths, fetchpriority: fetch_priority, class: 'img-ratio'
+              }}
+            {%- endif -%}
+          
+        </div>
+        <div class="main-text-link">
+            <h2>{{ section.settings.main_title | upcase }}</h2>
+            <a href="{{ section.settings.link_url }}">{{ section.settings.link_text | upcase }}</a>
+        </div>
+    </div>
+</div>
+{% schema %}
+{
+  "name": "Image With Link",
+  "tag": "section",
+  "class": "image-with-link-wrapper",
+  "settings": [
+    {
+      "type": "image_picker",
+      "label": "Main Image",
+      "id": "main_image"
+    },
+    {
+      "type": "text",
+      "label": "Main Title",
+      "id": "main_title"
+    },
+    {
+      "type": "url",
+      "label": "Link URL",
+      "id": "link_url"
+    },
+    {
+      "type": "text",
+      "label": "Link Text",
+      "id": "link_text"
+    }
+  ],
+  "blocks": [],
+  "presets": [
+    {
+      "name": "Image With Link"
+    }
+  ]
+}
+{% endschema %}
+{% stylesheet %}
+{% endstylesheet %}
+{% javascript %}
+{% endjavascript %} 

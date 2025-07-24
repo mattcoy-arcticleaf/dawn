@@ -2,8 +2,12 @@
 {{ 'component-cart-items.css' | asset_url | stylesheet_tag }}
 {{ 'component-totals.css' | asset_url | stylesheet_tag }}
 {{ 'component-price.css' | asset_url | stylesheet_tag }}
-{{ 'component-discounts.css' | asset_url | stylesheet_tag }}
-{{ 'quantity-popover.css' | asset_url | stylesheet_tag }}
+<link href="{{ 'component-discounts.css' | asset_url }}" rel="stylesheet" media="print" onload="this.media='all'">
+<link href="{{ 'quantity-popover.css' | asset_url }}" rel="stylesheet" media="print" onload="this.media='all'">
+
+{%- if cart != empty and cart.items.first.image -%}
+  <link rel="preload" as="image" href="{{ cart.items.first.image | image_url: width: 300 }}" imagesrcset="{{ cart.items.first.image | image_url: width: 150 }} 150w, {{ cart.items.first.image | image_url: width: 300 }} 300w, {{ cart.items.first.image | image_url: width: 600 }} 600w" imagesizes="(max-width: 600px) 150px, 300px">
+{%- endif -%}
 
 {%- style -%}
   .section-{{ section.id }}-padding {
@@ -87,11 +91,13 @@
                         <div class="cart-item__image-container gradient global-media-settings">
                           <img
                             src="{{ item.image | image_url: width: 300 }}"
+                            srcset="{{ item.image | image_url: width: 150 }} 150w, {{ item.image | image_url: width: 300 }} 300w, {{ item.image | image_url: width: 600 }} 600w"
+                            sizes="(max-width: 600px) 150px, 300px"
                             class="cart-item__image"
                             alt="{{ item.image.alt | escape }}"
-                            loading="lazy"
                             width="150"
                             height="{{ 150 | divided_by: item.image.aspect_ratio | ceil }}"
+                            {% if forloop.first %}fetchpriority="high"{% endif %}
                           >
                         </div>
                       {% endif %}

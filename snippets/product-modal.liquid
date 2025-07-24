@@ -1,0 +1,39 @@
+{%  comment  %}
+    render modal for custom page selection on product page
+    Accepts:
+    - block_id: {String} Block-id
+    - title: {String} Text link, which will help to open modal
+    - block_text: {String} Selected custom page title
+    - block_content: {String} Selected custom page content
+    - shopify_attributes: {String} Shopify block attributes (optional)
+    Usage:
+    {% render 'product-modal', 
+        block_id: block.id , 
+        title: block.settings.page.title, 
+        block_text: block.settings.text,
+        block_content: block.settings.page.content,
+        shopify_attributes: block.shopify_attributes
+    %}
+{% endcomment %}
+<modal-dialog id="PopupModal-{{ block_id }}" class="product-popup-modal" {{ shopify_attributes }}>
+    <div
+        role="dialog"
+        aria-label="{{ block_text }}"
+        aria-modal="true"
+        class="product-popup-modal__content"
+        tabindex="-1"
+    >
+        <button
+            id="ModalClose-{{ block_id }}"
+            type="button"
+            class="product-popup-modal__toggle"
+            aria-label="{{ 'accessibility.close' | t }}"
+        >
+            {{- 'icon-close.svg' | inline_asset_content -}}
+        </button>
+        <div class="product-popup-modal__content-info">
+            <h1 class="h2">{{ title | escape }}</h1>
+            {{ block_content }}
+        </div>
+    </div>
+</modal-dialog>

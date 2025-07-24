@@ -1,0 +1,61 @@
+<div class="page-width">
+  <div class="ctm-collection_inner {{ section.settings.extra_class }}">
+    <div class="collection-title">
+        <h2>{{ section.settings.title }}</h2>
+    </div>
+    {% if section.settings.collection_list != empty %}
+      <div class="ctm-collection-list">
+        {% for collection in section.settings.collection_list %}
+          <div class="ctm-collection-item">
+            <a href="{{ collection.url }}">
+                <div class="collection-img">
+                    <img class="img-ratio" src="{{ collection.featured_image | img_url: 'medium' }}" alt="{{ collection.title }}">
+                </div>
+              <h4>{{ collection.title }}</h4>
+            </a>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p>No collections selected.</p>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Custom Collection List",
+  "tag": "section",
+  "class": "ctm-collection_wrapper",
+  "settings": [
+    {
+      "type": "text",
+      "id": "extra_class",
+      "label": "Section Extra Class"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "label": "Collection Title",
+      "default": "t:sections.main-list-collections.settings.title.default"
+    },
+    {
+      "type": "collection_list",
+      "label": "Collection List",
+      "id": "collection_list"
+    }
+  ],
+  "blocks": [],
+  "presets": [
+    {
+      "name": "Custom Collection List"
+    }
+  ]
+}
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

@@ -89,7 +89,7 @@
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
-  color: rgb(var(--color-foreground));
+  color: var(--primary-color);
   width: 100%;
   padding-right: 4rem;
   padding-bottom: 1.5rem;

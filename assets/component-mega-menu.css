@@ -42,7 +42,7 @@
 }
 
 .mega-menu__link {
-  color: rgba(var(--color-foreground), 0.75);
+  color: var(--body-color);
   display: block;
   line-height: calc(1 + 0.3 / var(--font-body-scale));
   padding-bottom: 0.6rem;
@@ -50,10 +50,12 @@
   text-decoration: none;
   transition: text-decoration var(--duration-short) ease;
   word-wrap: break-word;
+  text-transform: uppercase;
 }
 
 .mega-menu__link--level-2 {
   font-weight: bold;
+  pointer-events: none;
 }
 
 .header--top-center .mega-menu__list {
@@ -61,11 +63,17 @@
   justify-content: center;
   flex-wrap: wrap;
   column-gap: 0;
+  max-width: calc(100% + 96px);
+  gap: 40px;
 }
 
 .header--top-center .mega-menu__list > li {
   width: 16%;
   padding-right: 2.4rem;
+}
+
+.header--top-center .mega-menu__list > li:nth-of-type(1) {
+  border-right: 1px solid var(--body-color);
 }
 
 .mega-menu__link:hover,

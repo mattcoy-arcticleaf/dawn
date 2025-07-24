@@ -28,6 +28,7 @@
   endif
 -%}
 
+
 <div class="facets-container{% if filter_type == 'drawer' %} facets-container-drawer{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
   {%- if filter_type == 'vertical' or filter_type == 'horizontal' -%}
     <facet-filters-form class="facets small-hide">
@@ -446,9 +447,16 @@
     <details class="mobile-facets__disclosure disclosure-has-popup">
       <summary class="mobile-facets__open-wrapper focus-offset">
         <span class="mobile-facets__open{% if filter_type == 'drawer' and enable_filtering == false %} medium-hide large-up-hide{% endif %}">
-          <span class="svg-wrapper">
-            {{- 'icon-filter.svg' | inline_asset_content -}}
-          </span>
+          {% comment %}
+            <span class="svg-wrapper">
+              {{- 'icon-filter.svg' | inline_asset_content -}}
+            </span>
+          {% endcomment %}
+          <div class="filter-navigation">
+            <div class="filter-button" data-index="mobile-0">browse</div>
+            <div class="filter-button" data-index="mobile-30">sort by</div>
+            <div class="filter-button" data-index="mobile-1">refine</div>
+          </div>
           <span class="mobile-facets__open-label button-label medium-hide large-up-hide">
             {%- if enable_filtering and enable_sorting -%}
               {{ 'products.facets.filter_and_sort' | t }}
@@ -458,11 +466,13 @@
               {{ 'products.facets.sort_button' | t }}
             {%- endif -%}
           </span>
-          <span class="mobile-facets__open-label button-label small-hide">
-            {%- if enable_filtering -%}
-              {{ 'products.facets.filter_button' | t }}
-            {%- endif -%}
-          </span>
+          {% comment %}
+            <span class="mobile-facets__open-label button-label small-hide">
+              {%- if enable_filtering -%}
+                {{ 'products.facets.filter_button' | t }}
+              {%- endif -%}
+            </span>
+          {% endcomment %}
         </span>
         <span tabindex="0" class="mobile-facets__close">
           <span class="svg-wrapper">
@@ -517,6 +527,183 @@
                       assign visual_layout_class = 'facets-layout facets-layout-list facets-layout-list--' | append: presentation
                     endif
                   %}
+                  {% if forloop.index == 1 %}
+                    <details
+                      id="Details-Mobile-BrowseCollections-{{ section.id }}"
+                      class="mobile-facets__details browse-collection"
+                      data-index="mobile-0"
+                    >
+                      <summary class="mobile-facets__summary focus-inset">
+                        <div>
+                          <span>Browse Collections</span>
+                          <span class="mobile-facets__arrow">
+                            {% comment %} {{- 'icon-arrow.svg' | inline_asset_content -}} {% endcomment %}
+                            <svg
+                              class="icon--root icon--chevron-up"
+                              width="10"
+                              height="6"
+                              viewBox="0 0 10 6"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path d="m5 1.942-3.53 3.53-.707-.707 3.53-3.53L5 .528l4.237 4.237-.707.707L5 1.942Z" fill="#000" fill-rule="nonzero"></path>
+                            </svg>
+                            <svg
+                              class="icon--root icon--chevron-down"
+                              width="10"
+                              height="6"
+                              viewBox="0 0 10 6"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path d="M5 4.058 8.53.528l.707.707-3.53 3.53L5 5.472.763 1.235 1.47.528 5 4.058Z" fill="#000" fill-rule="nonzero"></path>
+                            </svg>
+                          </span>
+                        </div>
+                      </summary>
+                      <div id="FacetMobile-BrowseCollections-{{ section.id }}" class="mobile-facets__submenu gradient">
+                        <button
+                          class="mobile-facets__close-button link link--text focus-inset"
+                          aria-expanded="true"
+                          type="button"
+                        >
+                          {{- 'icon-arrow.svg' | inline_asset_content -}}
+                          <span>Browse Collections</span>
+                        </button>
+                        <ul class="mobile-facets__list list-unstyled" role="list">
+                         {% for link in linklists['browse-collections-menu'].links %}
+                            <li class="mobile-facets__item list-menu__item">
+                              <a href="{{ link.url }}" class="mobile-facets__collection-link">
+                                {{ link.title }}
+                              </a>
+                            </li>
+                          {% endfor %}
+                        </ul>
+                      </div>
+                    </details>
+
+                    {%- if enable_sorting -%}
+                      <details
+                        id="Details-Mobile-SortBy-{{ section.id }}"
+                        class="mobile-facets__details js-filter{% comment %}{% if filter_type == 'drawer' %} medium-hide large-up-hide{% endif %}{% endcomment %}"
+                        data-index="mobile-30"
+                      >
+                        <summary class="mobile-facets__summary focus-inset">
+                          <div>
+                            <span>{{ 'products.facets.sort_by_label' | t }}</span>
+                            <span class="mobile-facets__arrow">
+                              {% comment %} {{- 'icon-arrow.svg' | inline_asset_content -}} {% endcomment %}
+                              <svg
+                              class="icon--root icon--chevron-up"
+                              width="10"
+                              height="6"
+                              viewBox="0 0 10 6"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path d="m5 1.942-3.53 3.53-.707-.707 3.53-3.53L5 .528l4.237 4.237-.707.707L5 1.942Z" fill="#000" fill-rule="nonzero"></path>
+                            </svg>
+                            <svg
+                              class="icon--root icon--chevron-down"
+                              width="10"
+                              height="6"
+                              viewBox="0 0 10 6"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path d="M5 4.058 8.53.528l.707.707-3.53 3.53L5 5.472.763 1.235 1.47.528 5 4.058Z" fill="#000" fill-rule="nonzero"></path>
+                            </svg>
+                            </span>
+                          </div>
+                        </summary>
+                        <div
+                          id="FacetMobile-BrowseCollections-{{ section.id }}"
+                          class="mobile-facets__submenu gradient"
+                        >
+                          <button
+                            class="mobile-facets__close-button link link--text focus-inset"
+                            aria-expanded="true"
+                            type="button"
+                          >
+                            {{- 'icon-arrow.svg' | inline_asset_content -}}
+                            <span>{{ 'products.facets.sort_by_label' | t }}</span>
+                          </button>
+
+                          <ul class="{{ visual_layout_class }} mobile-facets__list list-unstyled" role="list">
+                            {%- for option in results.sort_options -%}
+                              <li class="mobile-facets__item list-menu__item">
+                                {% assign assign input_id = 'Filter-' | append:'sort_by' | escape | append: '-' | append: forloop.index %}
+                                <label
+                                  for="{{ input_id }}"
+                                  class="facets__label mobile-facets__label {% if option.value == sort_by %} active{% endif %}"
+                                >
+                                  <input
+                                    class="mobile-facets__checkbox"
+                                    type="radio"
+                                    name="sort_by"
+                                    id="{{ input_id }}"
+                                    value="{{ option.value | escape }}"
+                                    {% if option.value == sort_by %}
+                                      checked
+                                    {% endif %}
+                                  >
+                                  {{- 'square.svg' | inline_asset_content -}}
+                                  {{- 'icon-checkmark.svg' | inline_asset_content -}}
+                                  <span class="facet-checkbox__text" aria-hidden="true">
+                                    <span class="facet-checkbox__text-label">{{ option.name | escape }}</span>
+                                  </span>
+                                </label>
+                              </li>
+                            {%- endfor -%}
+                          </ul>
+                        </div>
+                      </details>
+                    {%- endif -%}
+                    {% comment %}
+                      <div class="filter--category">
+                        <div
+                          class="filter--toggle"
+                          tabindex="0"
+                          data-item="nav-text"
+                          aria-expanded="false"
+                          aria-controls="sort-filter"
+                          role="button"
+                        >
+                          {{ 'products.facets.sort_by_label' | t }}
+                        </div>
+
+                        <ul
+                          class="filter--menu"
+                          id="sort-filter"
+                          role="radiogroup"
+                          data-transition-item="viewport"
+                          data-transition-trigger="custom"
+                          data-transition-type="fade-in"
+                        >
+                          {%- for option in collection.sort_options -%}
+                            <li class="filter--link" data-type="sort">
+                              <input
+                                id="filter--sort--{{ option.name | handle | downcase }}"
+                                class="filter--input"
+                                type="radio"
+                                name="sort_by"
+                                value="{{ option.value | escape }}"
+                                data-label="{{ option.name }}"
+                                tabindex="-1"
+                                {% if option.value == sort_by %}
+                                  checked
+                                {% endif %}
+                              >
+                              <label
+                                class="filter--label"
+                                for="filter--sort--{{ option.name | handle | downcase }}"
+                                data-item="nav-text--sub"
+                                tabindex="0"
+                              >
+                                <span>{{ option.name | escape }}</span>
+                              </label>
+                            </li>
+                          {%- endfor -%}
+                        </ul>
+                      </div>
+                    {% endcomment %}
+                  {% endif %}
 
                   {% case filter.type %}
                     {% when 'boolean', 'list' %}
@@ -529,7 +716,25 @@
                           <div>
                             <span>{{ filter.label | escape }}</span>
                             <span class="mobile-facets__arrow">
-                              {{- 'icon-arrow.svg' | inline_asset_content -}}
+                              {% comment %} {{- 'icon-arrow.svg' | inline_asset_content -}} {% endcomment %}
+                              <svg
+                              class="icon--root icon--chevron-up"
+                              width="10"
+                              height="6"
+                              viewBox="0 0 10 6"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path d="m5 1.942-3.53 3.53-.707-.707 3.53-3.53L5 .528l4.237 4.237-.707.707L5 1.942Z" fill="#000" fill-rule="nonzero"></path>
+                            </svg>
+                            <svg
+                              class="icon--root icon--chevron-down"
+                              width="10"
+                              height="6"
+                              viewBox="0 0 10 6"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path d="M5 4.058 8.53.528l.707.707-3.53 3.53L5 5.472.763 1.235 1.47.528 5 4.058Z" fill="#000" fill-rule="nonzero"></path>
+                            </svg>
                             </span>
                           </div>
                         </summary>
@@ -671,7 +876,25 @@
                           <div>
                             <span>{{ filter.label | escape }}</span>
                             <span class="mobile-facets__arrow">
-                              {{- 'icon-arrow.svg' | inline_asset_content -}}
+                              {% comment %} {{- 'icon-arrow.svg' | inline_asset_content -}} {% endcomment %}
+                              <svg
+                              class="icon--root icon--chevron-up"
+                              width="10"
+                              height="6"
+                              viewBox="0 0 10 6"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path d="m5 1.942-3.53 3.53-.707-.707 3.53-3.53L5 .528l4.237 4.237-.707.707L5 1.942Z" fill="#000" fill-rule="nonzero"></path>
+                            </svg>
+                            <svg
+                              class="icon--root icon--chevron-down"
+                              width="10"
+                              height="6"
+                              viewBox="0 0 10 6"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path d="M5 4.058 8.53.528l.707.707-3.53 3.53L5 5.472.763 1.235 1.47.528 5 4.058Z" fill="#000" fill-rule="nonzero"></path>
+                            </svg>
                             </span>
                           </div>
                         </summary>
@@ -714,42 +937,6 @@
                       </details>
                   {% endcase %}
                 {%- endfor -%}
-              {%- endif -%}
-
-              {%- if enable_sorting -%}
-                <div
-                  id="Details-Mobile-SortBy-{{ section.id }}"
-                  class="mobile-facets__details js-filter{% if filter_type == 'drawer' %} medium-hide large-up-hide{% endif %}"
-                  data-index="mobile-{{ forloop.index }}"
-                >
-                  <div class="mobile-facets__summary">
-                    <div class="mobile-facets__sort">
-                      <label for="SortBy-mobile">{{ 'products.facets.sort_by_label' | t }}</label>
-                      <div class="select">
-                        <select
-                          name="sort_by"
-                          class="select__select"
-                          id="SortBy-mobile"
-                          aria-describedby="a11y-refresh-page-message"
-                        >
-                          {%- for option in results.sort_options -%}
-                            <option
-                              value="{{ option.value | escape }}"
-                              {% if option.value == sort_by %}
-                                selected="selected"
-                              {% endif %}
-                            >
-                              {{ option.name | escape }}
-                            </option>
-                          {%- endfor -%}
-                        </select>
-                        <span class="svg-wrapper">
-                          {{- 'icon-caret.svg' | inline_asset_content -}}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
               {%- endif -%}
 
               <div class="mobile-facets__footer">
@@ -824,49 +1011,52 @@
   </div>
   {% comment %} Sort, product count and filter pills at the end when filter is type of Drawer for the correct tabbing order {% endcomment %}
   {%- if enable_sorting and filter_type == 'drawer' -%}
-    <facet-filters-form class="facets small-hide">
-      <form id="FacetSortDrawerForm" class="facets__form">
-        <div class="facet-filters sorting caption small-hide">
-          <div class="facet-filters__field">
-            <h2 class="facet-filters__label caption-large text-body">
-              <label for="SortBy">{{ 'products.facets.sort_by_label' | t }}</label>
-            </h2>
-            <div class="select">
-              {%- assign sort_by = results.sort_by | default: results.default_sort_by -%}
-              <select
-                name="sort_by"
-                class="facet-filters__sort select__select caption-large"
-                id="SortBy"
-                aria-describedby="a11y-refresh-page-message"
-              >
-                {%- for option in results.sort_options -%}
-                  <option
-                    value="{{ option.value | escape }}"
-                    {% if option.value == sort_by %}
-                      selected="selected"
-                    {% endif %}
-                  >
-                    {{ option.name | escape }}
-                  </option>
-                {%- endfor -%}
-              </select>
-              <span class="svg-wrapper">
-                {{- 'icon-caret.svg' | inline_asset_content -}}
-              </span>
+    {% comment %}
+      <facet-filters-form class="facets small-hide">
+        <form id="FacetSortDrawerForm" class="facets__form">
+          <div class="facet-filters sorting caption small-hide">
+            <div class="facet-filters__field">
+              <h2 class="facet-filters__label caption-large text-body">
+                <label for="SortBy">{{ 'products.facets.sort_by_label' | t }}</label>
+              </h2>
+              <div class="select">
+                {%- assign sort_by = results.sort_by | default: results.default_sort_by -%}
+                <select
+                  name="sort_by"
+                  class="facet-filters__sort select__select caption-large"
+                  id="SortBy"
+                  data-index="mobile-4"
+                  aria-describedby="a11y-refresh-page-message"
+                >
+                  {%- for option in results.sort_options -%}
+                    <option
+                      value="{{ option.value | escape }}"
+                      {% if option.value == sort_by %}
+                        selected="selected"
+                      {% endif %}
+                    >
+                      {{ option.name | escape }}
+                    </option>
+                  {%- endfor -%}
+                </select>
+                <span class="svg-wrapper">
+                  {{- 'icon-caret.svg' | inline_asset_content -}}
+                </span>
+              </div>
             </div>
           </div>
-        </div>
 
-        {% if results.current_vendor or results.current_type %}
-          <input type="hidden" name="q" value="{{ results.current_vendor }}{{ results.current_type }}">
-        {% endif %}
+          {% if results.current_vendor or results.current_type %}
+            <input type="hidden" name="q" value="{{ results.current_vendor }}{{ results.current_type }}">
+          {% endif %}
 
-        {%- if results.terms -%}
-          <input type="hidden" name="q" value="{{ results.terms | escape }}">
-          <input name="options[prefix]" type="hidden" value="last">
-        {%- endif -%}
-      </form>
-    </facet-filters-form>
+          {%- if results.terms -%}
+            <input type="hidden" name="q" value="{{ results.terms | escape }}">
+            <input name="options[prefix]" type="hidden" value="last">
+          {%- endif -%}
+        </form>
+      </facet-filters-form>
+    {% endcomment %}
   {%- endif -%}
   <div
     class="product-count light{% if filter_type == 'vertical' or filter_type == 'horizontal' %} medium-hide large-up-hide{% endif %}"
@@ -887,6 +1077,44 @@
       </span>
     </h2>
     {%- render 'loading-spinner' -%}
+  </div>
+  <div class="grid-layout-btn">
+    <div
+      class="navigation--layout-button"
+      tabindex="0"
+      data-active="false"
+      data-column-size="2"
+      role="button"
+      aria-label="toggle larger product view"
+    >
+      <svg
+        class="icon--root icon--grid-large"
+        width="12"
+        height="12"
+        viewBox="0 0 12 12"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path d="M0 0h5.2v5.2H0V0Zm0 6.8h5.2V12H0V6.8ZM6.8 0H12v5.2H6.8V0Zm0 6.8H12V12H6.8V6.8Z" fill="#000" fill-rule="evenodd"></path>
+      </svg>
+    </div>
+    <div
+      class="navigation--layout-button"
+      tabindex="0"
+      data-active="true"
+      data-column-size="4"
+      role="button"
+      aria-label="toggle smaller product view"
+    >
+      <svg
+        class="icon--root icon--grid-small"
+        width="12"
+        height="12"
+        viewBox="0 0 12 12"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path d="M0 0h2.867v2.867H0V0Zm0 4.567h2.867v2.866H0V4.567Zm0 4.566h2.867V12H0V9.133ZM4.567 0h2.866v2.867H4.567V0Zm0 4.567h2.866v2.866H4.567V4.567Zm0 4.566h2.866V12H4.567V9.133ZM9.133 0H12v2.867H9.133V0Zm0 4.567H12v2.866H9.133V4.567Zm0 4.566H12V12H9.133V9.133Z" fill="#000" fill-rule="evenodd"></path>
+      </svg>
+    </div>
   </div>
   {%- if filter_type == 'drawer' -%}
     <facet-filters-form class="facets facets-pill small-hide">
@@ -935,3 +1163,4 @@
     </facet-filters-form>
   {%- endif -%}
 </div>
+

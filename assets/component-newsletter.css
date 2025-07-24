@@ -21,6 +21,10 @@
 
 .newsletter-form__field-wrapper .field__input {
   padding-right: 5rem;
+  font-style: italic;
+}
+.newsletter-form__field-wrapper label {
+  font-style: italic;
 }
 
 .newsletter-form__field-wrapper .field {

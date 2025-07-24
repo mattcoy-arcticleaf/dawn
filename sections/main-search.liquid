@@ -66,13 +66,13 @@
 {% paginate search.results by 24 %}
   <div class="template-search{% unless search.performed and search.results_count > 0 %} template-search--empty{% endunless %} section-{{ section.id }}-padding">
     <div class="template-search__header page-width{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
-      <h1 class="h2 center">
+      <h3 class="center h4">
         {%- if search.performed -%}
-          {{- 'templates.search.title' | t -}}
+          {{- 'templates.search.title' | t | upcase -}}
         {%- else -%}
-          {{- 'general.search.search' | t -}}
+          {{- 'general.search.search' | t | upcase -}}
         {%- endif -%}
-      </h1>
+      </h3>
       <div class="template-search__search">
         {%- if settings.predictive_search_enabled -%}
           <predictive-search data-loading-text="{{ 'accessibility.loading' | t }}">
@@ -212,7 +212,7 @@
           {%- if section.settings.enable_filtering or section.settings.enable_sorting -%}
             <aside
               aria-labelledby="verticalTitle"
-              class="facets-wrapper{% unless section.settings.enable_filtering %} facets-wrapper--no-filters{% endunless %}{% if section.settings.filter_type != 'vertical' %} page-width{% endif %}"
+              class="facets-wrapper container-fluid{% unless section.settings.enable_filtering %} facets-wrapper--no-filters{% endunless %}{% if section.settings.filter_type != 'vertical' %} page-widths{% endif %}"
               id="main-search-filters"
               data-id="{{ section.id }}"
             >
@@ -229,7 +229,7 @@
         <div class="product-grid-container" id="ProductGridContainer">
           {%- if search.results.size == 0 and search.filters != empty -%}
             <div
-              class="template-search__results collection collection--empty{% if section.settings.filter_type != 'vertical' %} page-width{% endif %}"
+              class="template-search__results container-fluid collection collection--empty{% if section.settings.filter_type != 'vertical' %} page-widths{% endif %}"
               id="product-grid"
               data-id="{{ section.id }}"
             >
@@ -247,7 +247,7 @@
             </div>
           {%- else -%}
             <div
-              class="template-search__results collection{% if section.settings.filter_type != 'vertical' %} page-width{% endif %}"
+              class="template-search__results container-fluid collection{% if section.settings.filter_type != 'vertical' %} page-widths{% endif %}"
               id="product-grid"
               data-id="{{ section.id }}"
             >

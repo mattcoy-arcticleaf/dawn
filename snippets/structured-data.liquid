@@ -1,0 +1,364 @@
+{% assign templatepre =  template | split : '.' | first %}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "OnlineStore",
+  "@id": "{{ shop.url }}/#org",
+  "name": {{ shop.name | strip | json }},
+  "url": {{ shop.url | json }},
+  "description": {% if shop.metafields.global.homepage_description %}{{ shop.metafields.global.homepage_description | strip_html | json }}{% else %}{{ shop.description | strip_html | json }}{% endif %},
+  "telephone": {{ shop.phone | remove: '-' | json }},
+  "logo": {{ settings.logo.src | img_url: '2048x2048' | prepend: 'https:' | json }},
+  "image": {{ settings.logo.src | img_url: '2048x2048' | prepend: 'https:' | json }},
+  "sameAs": [
+    "https://www.facebook.com/SassyShortcake/",
+    "https://www.instagram.com/sassyshortcake/",
+    "https://www.pinterest.com/sassyshortcakeb/",
+    "https://www.linkedin.com/company/sassy-shortcake-boutique",
+    "https://www.tiktok.com/@sassyshortcakeboutique",
+    "https://twitter.com/sassyshortcakeb",
+    "https://www.youtube.com/@sassyshortcake"
+  ],
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": {{ shop.address.street | json }},
+    "addressLocality": {{ shop.address.city | json }},
+    "addressRegion": {{ shop.address.province | json }},
+    "postalCode": {{ shop.address.zip | json }},
+    "addressCountry": {{ shop.address.country_code | json }}
+  },
+  "contactPoint": [
+    {
+      "@type": "ContactPoint",
+      "telephone": {{ shop.phone | remove: '-' | json }},
+      "email": {{ shop.email | json }},
+      "contactType": "customer service"
+    }
+  ],
+  "hasMerchantReturnPolicy": {
+    "@id": {{ shop.url | append: '/pages/return-policy' | json }}
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "MerchantReturnPolicy",
+  "@id": {{ shop.url | append: '#return-policy' | json }},
+  "merchantReturnLink": {% if shop.policies.refund.url %}{{ shop.policies.refund.url | absolute_url | json }}{% else %}{{ shop.url | append: '/pages/return-policy' | json }}{% endif %},
+  "returnFees": {{ settings.return_fees | default: 'FreeReturn' | json }},
+  "refundType": {{ settings.refund_type | default: 'FullRefund' | json }}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": {{ shop.name | strip | json }},
+  "url": {{ shop.url | json }},
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "{{ shop.url }}/search?q={search_term_string}"
+    },
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+
+{% case templatepre %}
+  {% when 'index' %}
+  {% when 'collection' %}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {"@type": "ListItem", "position": 1, "item": {"@id": {{ shop.url | json }}, "name": "Home"}},
+        {"@type": "ListItem", "position": 2, "item": {"@id": {{ shop.url | append: '/collections' | json }}, "name": "Collections"}},
+        {"@type": "ListItem", "position": 3, "item": {"@id": {{ shop.url | append: collection.url | json }}, "name": {{ collection.title | json }}}}
+      ]
+    }
+    </script>
+  {% when 'product' %}
+    {% assign seconds = 365 | times: 24 | times: 60 | times: 60 %}
+    {% assign price_valid_until = 'now' | date: "%s" | plus: seconds | date: "%Y-%m-%d" %}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "item": {
+            "@id": {{ shop.url | json }},
+            "name": "Home"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "item": {
+            "@id": {{ shop.url | append: '/collections' | json }},
+            "name": "Collections"
+          }
+        }
+        {%- assign primary_collection = nil -%}
+        {%- if collection and collection.handle != 'all' -%}
+          {%- assign primary_collection = collection -%}
+        {%- else -%}
+          {%- for c in product.collections -%}
+            {%- if c.handle != 'all' -%}
+              {%- assign primary_collection = c -%}
+              {%- break -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+        {%- if primary_collection -%}
+          ,{
+            "@type": "ListItem",
+            "position": 3,
+            "item": {
+              "@id": {{ primary_collection.url | absolute_url | json }},
+              "name": {{ primary_collection.title | json }}
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 4,
+            "item": {
+              "@id": {{ product.url | absolute_url | json }},
+              "name": {{ product.title | json }}
+            }
+          }
+        {%- else -%}
+          ,{
+            "@type": "ListItem",
+            "position": 3,
+            "item": {
+              "@id": {{ product.url | absolute_url | json }},
+              "name": {{ product.title | json }}
+            }
+          }
+        {%- endif -%}
+      ]
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "@id": {{ canonical_url | append: '#product' | json }},
+      "name": {{ product.title | json }},
+      "url": {{ product.url | absolute_url | json }},
+      "image": [{% if product.featured_image %}{{ product.featured_image | image_url: '1024x1024' | absolute_url | json }}{% endif %}],
+      "description": {{ product.description | strip_html | json }},
+      "brand": {
+        "@type": "Brand",
+        "name": {{ product.vendor | json }}
+      },
+      "offers": [
+        {% for variant in product.variants %}
+        {
+          "@type": "Offer",
+          {% if variant.sku != blank %}"sku": {{ variant.sku | json }},{% endif %}
+          "priceCurrency": {{ shop.currency | json }},
+          "price": {{ variant.price | divided_by: 100.0 | json }},
+          "priceValidUntil": {{ price_valid_until | json }},
+          "availability": "https://schema.org/{% if variant.available %}InStock{% else %}OutOfStock{% endif %}",
+          "url": {{ shop.url | append: variant.url | json }},
+          "shippingDetails": {
+            "@type": "OfferShippingDetails",
+            "shippingRate": {
+              "@type": "MonetaryAmount",
+              "value": {% assign free_min = settings.free_shipping_minimum | default: 100 %}{% if variant.price | divided_by: 100.0 >= free_min %}0{% else %}{{ settings.shipping_rate | default: 6.95 }}{% endif %},
+              "currency": {{ shop.currency | json }}
+            },
+             "shippingDestination": [
+        {"@type": "DefinedRegion", "addressCountry": "US"}
+      ],
+            "deliveryTime": {
+              "@type": "ShippingDeliveryTime",
+              "handlingTime": {"@type": "QuantitativeValue", "minValue": 1, "maxValue": 3, "unitCode": "DAY"},
+              "transitTime": {"@type": "QuantitativeValue", "minValue": 6, "maxValue": 9, "unitCode": "DAY"}
+            }
+          },
+          "hasMerchantReturnPolicy": { "@id": {{ shop.url | append: '#return-policy' | json }} }
+        }{% unless forloop.last %},{% endunless %}
+        {% endfor %}
+      ]
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "MerchantReturnPolicy",
+      "@id": "{{ shop.url }}{{ product.url }}#json-ld-for-seo-return-policy",
+      "merchantReturnLink": {{ shop.url | append: '/pages/return-policy' | json }},
+      "returnFees": "FreeReturn",
+      "refundType": "FullRefund"
+    }
+    </script>
+  {% when 'blog' %}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {"@type": "ListItem", "position": 1, "item": {"@id": "{{ shop.secure_url | escape }}", "name": "Home"}},
+        {"@type": "ListItem", "position": 2, "item": {"@id": "{{ blog.url | absolute_url }}", "name": "Blog"}}
+      ]
+    }
+    </script>
+  {% when 'article' %}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {"@type": "ListItem", "position": 1, "item": {"@id": "{{ shop.secure_url | escape }}", "name": "Home"}},
+        {"@type": "ListItem", "position": 2, "item": {"@id": "{{ blog.url | absolute_url }}", "name": "Blog"}},
+        {"@type": "ListItem", "position": 3, "item": {"@id": "{{ article.url | absolute_url }}", "name": {{ article.title | json }}}}
+      ]
+    }
+    </script>
+  {% when 'page' %}
+    {% if page.handle == 'about-us-new' or page.handle == 'contact-us' %}
+      <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {"@type": "ListItem", "position": 1, "item": {"@id": "{{ shop.secure_url | escape }}", "name": "Home"}},
+          {"@type": "ListItem", "position": 2, "item": {"@id": "{{ page.url | absolute_url }}", "name": {{ page.title | json }}}}
+        ]
+      }
+      </script>
+    {% endif %}
+{% endcase %}
+
+{% if templatepre == 'index' %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": {{ shop.url | append: '/#webpage' | json }},
+    "name": {{ shop.name | strip | json }},
+    "url": {{ shop.url | json }},
+    "description": {% if shop.metafields.global.homepage_description %}{{ shop.metafields.global.homepage_description | strip_html | json }}{% else %}{{ shop.description | strip_html | json }}{% endif %},
+    "image": {{ settings.logo.src | img_url: '2048x2048' | prepend: 'https:' | json }},
+    "publisher": { "@type": "Organization", "@id": "{{ shop.url }}/#org" }
+  }
+  </script>
+{% elsif templatepre == 'collection' and collection %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": {{ collection.title | json }},
+    "url": {{ collection.url | absolute_url | json }},
+    "description": {% if collection.metafields.global.description_tag %}{{ collection.metafields.global.description_tag | strip_html | json }}{% else %}{{ collection.description | strip_html | json }}{% endif %},
+    {% if collection.image %}"image": {{ collection.image.src | image_url: '1024x1024' | absolute_url | json }},{% endif %}
+    "mainEntity": {
+      "@type": "ItemList",
+      "itemListElement": [
+        {% assign seconds = 365 | times: 24 | times: 60 | times: 60 %}
+        {% assign price_valid_until = 'now' | date: "%s" | plus: seconds | date: "%Y-%m-%d" %}
+        {% for product in collection.products %}
+        {
+          "@type": "ListItem",
+          "position": {{ forloop.index }},
+          "item": {
+            "@type": "Product",
+            "name": {{ product.title | json }},
+            "url": {{ product.url | absolute_url | json }},
+            "image": [{% if product.featured_image %}{{ product.featured_image | image_url: '1024x1024' | absolute_url | json }}{% endif %}],
+            "description": {{ product.description | strip_html | json }},
+            "offers": [
+              {% for variant in product.variants %}
+              {
+                "@type": "Offer",
+                {% if variant.sku != blank %}"sku": {{ variant.sku | json }},{% endif %}
+                "priceCurrency": {{ shop.currency | json }},
+                "price": {{ variant.price | divided_by: 100.0 | json }},
+                "priceValidUntil": {{ price_valid_until | json }},
+                "availability": "https://schema.org/{% if variant.available %}InStock{% else %}OutOfStock{% endif %}",
+                "url": {{ shop.url | append: variant.url | json }},
+                "shippingDetails": {
+                  "@type": "OfferShippingDetails",
+                  "shippingRate": {
+                    "@type": "MonetaryAmount",
+                    "value": {% assign free_min = settings.free_shipping_minimum | default: 100 %}{% if variant.price | divided_by: 100.0 >= free_min %}0{% else %}{{ settings.shipping_rate | default: 6.95 }}{% endif %},
+                    "currency": {{ shop.currency | json }}
+                  },
+                   "shippingDestination": [
+        {"@type": "DefinedRegion", "addressCountry": "US"}
+      ],
+                  "deliveryTime": {
+                    "@type": "ShippingDeliveryTime",
+                    "handlingTime": {"@type": "QuantitativeValue", "minValue": 1, "maxValue": 3, "unitCode": "DAY"},
+                    "transitTime": {"@type": "QuantitativeValue", "minValue": 6, "maxValue": 9, "unitCode": "DAY"}
+                  }
+                },
+                "hasMerchantReturnPolicy": {
+                  "@id": {{ shop.url | append: '#return-policy' | json }}
+                }
+              }{% unless forloop.last %},{% endunless %}
+              {% endfor %}
+            ]
+          }
+        }{% unless forloop.last %},{% endunless %}
+        {% endfor %}
+      ]
+    }
+  }
+  </script>
+{% elsif templatepre == 'blog' %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "name": {{ blog.title | json }},
+    "url": {{ blog.url | absolute_url | json }},
+    "description": {{ blog.description | strip_html | json }},
+    "publisher": {
+      "@type": "Organization",
+      "@id": "{{ shop.url }}/#org"
+    }
+  }
+  </script>
+{% elsif templatepre == 'article' %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": {{ article.title | json }},
+    "url": {{ article.url | absolute_url | json }},
+    "datePublished": {{ article.published_at | date: '%Y-%m-%dT%H:%M:%SZ' | json }},
+    "dateModified": {{ article.updated_at | date: '%Y-%m-%dT%H:%M:%SZ' | json }},
+    "author": {
+      "@type": "Person",
+      "name": {{ article.author | json }},
+      "url": {{ shop.url | json }}
+    },
+    "image": [{% if article.image %}{{ article.image | image_url: '1024x1024' | absolute_url | json }}{% endif %}],
+    "description": {{ article.excerpt_or_content | strip_html | truncate: 160 | json }},
+    "publisher": { "@type": "Organization", "@id": "{{ shop.url }}/#org" }
+  }
+  </script>
+{% elsif templatepre == 'page' and (page.handle == 'about-us-new' or page.handle == 'contact-us') %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    "@id": "{{ page.url | absolute_url }}#about",
+    "name": {{ page.title | json }},
+    "url": {{ page.url | absolute_url | json }},
+    "description": {% if page.metafields.global.about_description %}{{ page.metafields.global.about_description | strip_html | json }}{% elsif page.description %}{{ page.description | strip_html | json }}{% else %}"About Sassy Shortcake, a family owned boutique brand in Charleston, SC."{% endif %},
+    "publisher": { "@type": "Organization", "@id": "{{ shop.url }}/#org" }
+  }
+  </script>
+{% endif %}

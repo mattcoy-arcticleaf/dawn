@@ -1,0 +1,63 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "padding_top": 28,
+        "padding_bottom": 28
+      }
+    },
+    "image_banner_M4AXAK": {
+      "type": "image-banner",
+      "settings": {
+        "image": "shopify:\/\/shop_images\/swimsuits_3.png",
+        "image_overlay_opacity": 0,
+        "image_height": "adapt",
+        "desktop_content_position": "middle-center",
+        "show_text_box": true,
+        "desktop_content_alignment": "center",
+        "color_scheme": "",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": true,
+        "show_text_below": true
+      }
+    },
+    "rich_text_pfRiEM": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_fqGbb4": {
+          "type": "heading",
+          "settings": {
+            "heading": "",
+            "heading_size": "h1"
+          }
+        },
+        "text_jgRr7B": {
+          "type": "text",
+          "settings": {
+            "text": "<h5><\/h5><p> THE ABOVE SIZING  APPLIES TO MOST OF OUR CLOTHING WITH OCCASIONAL VARIATION. <\/p><p>IF YOU SHOULD HAVE ADDITIONAL QUESTIONS WE ARE HAPPY TO HELP. <\/p><p>SEND US AN EMAIL TO INFO@SASSYSHORTCAKE.COM OR CHAT IN ON OUR WEBSITE.<\/p><p><strong>SASSY SHORTCAKE MODEL: 5'4 AND NORMALLY WEARS A SIZE SMALL IN MOST OF OUR ITEMS.<\/strong><\/p><h6><\/h6><h6><\/h6>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_fqGbb4",
+        "text_jgRr7B"
+      ],
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    }
+  },
+  "order": [
+    "main",
+    "image_banner_M4AXAK",
+    "rich_text_pfRiEM"
+  ]
+}

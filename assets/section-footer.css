@@ -7,7 +7,7 @@
 }
 
 .footer__content-top {
-  padding-bottom: 5rem;
+  padding-bottom: 0;
   display: block;
 }
 
@@ -18,7 +18,7 @@
 
   .footer-block.grid__item {
     padding: 0;
-    margin: 4rem 0;
+    margin: 1rem 0;
     width: 100%;
   }
 
@@ -41,8 +41,8 @@
 }
 
 .footer__content-bottom {
-  border-top: solid 0.1rem rgba(var(--color-foreground), 0.08);
-  padding-top: 3rem;
+  border-top:0;
+  padding-top: 0;
 }
 
 .footer__content-bottom:only-child {
@@ -128,7 +128,7 @@
 .footer-block--newsletter {
   display: flex;
   align-items: flex-end;
-  margin-top: 3rem;
+  margin-top: 0;
   gap: 1rem;
 }
 
@@ -293,6 +293,16 @@
 .footer__copyright {
   text-align: center;
   margin-top: 1.5rem;
+  width: 100%;
+}
+
+.footer__copyright  .copyright__content,.footer__copyright  .copyright__content a {
+  width: 100%;
+  text-align: right;
+  font-size: 16px;
+  font-weight: normal;
+  margin-bottom: 20px;
+  color: var(--primary-color);
 }
 
 @media screen and (min-width: 750px) {
@@ -313,7 +323,7 @@
 }
 
 .footer-block__details-content {
-  margin-bottom: 4rem;
+  margin-bottom: 0;
 }
 
 @media screen and (min-width: 750px) {
@@ -331,13 +341,16 @@
   }
 
   .footer-block__details-content > li:not(:last-child) {
-    margin-right: 1.5rem;
+    margin-right: 0;
   }
 }
 
 .footer-block__details-content .list-menu__item--link,
 .copyright__content a {
-  color: rgba(var(--color-foreground), 0.75);
+  color: var(--primary-color);
+  font-family: var(--primary-font);
+  font-size: 16px;
+  font-weight: 400;
 }
 
 .footer-block__details-content .list-menu__item--active {
@@ -368,7 +381,7 @@
 @media screen and (min-width: 750px) {
   .footer-block__details-content .list-menu__item--link {
     display: inline-block;
-    font-size: 1.4rem;
+    font-size: 1.6rem;
   }
 
   .footer-block__details-content > :first-child .list-menu__item--link {
@@ -476,6 +489,18 @@
     padding: 0;
   }
 }
+@keyframes animateLocalization {
+  0% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(-1rem);
+  }
+}
+
 @keyframes animateLocalization {
   0% {
     opacity: 0;
